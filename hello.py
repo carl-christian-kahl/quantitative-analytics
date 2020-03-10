@@ -1,3 +1,4 @@
-print('s')
+import numpy as np
 
-print('Yaaay Fincad')
+a = np.arange(25).reshape(5, 5)
+print(a)
