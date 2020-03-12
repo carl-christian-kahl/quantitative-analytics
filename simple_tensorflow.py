@@ -1,17 +1,31 @@
 import numpy as np
 import tensorflow as tf
 
-# Build a dataflow graph.
-c = tf.constant(2.0)
-d = tf.constant(3.0)
-e = c*c*d
+_SQRT_2 = np.sqrt(2.0, dtype=np.float64)
 
-de = tf.gradients(ys=[e], xs=[c,d])
+def _ncdf(x):
+  return (tf.math.erf(x / _SQRT_2) + 1) / 2
+
+def _black_scholes(f,k,s,t):
+    sdt = tf.math.sqrt(t) * s
+    d1 = tf.math.log(f/k) / sdt + 0.5 * sdt
+    return f*_ncdf(d1) - k*_ncdf(d1 - sdt)
+
+# Build a dataflow graph.
+f = tf.constant(1.0)
+k = tf.constant(1.0)
+s = tf.constant(0.2)
+t = tf.constant(1.0)
+
+v = _black_scholes(f,k,s,t)
+dv = tf.gradients(ys=[v], xs=[f,k,s,t])
+
+print(tf.global_variables())
 
 # Construct a `Session` to execute the graph.
 sess = tf.compat.v1.Session()
 
 # Execute the graph and store the value that `e` represents in `result`.
-result = sess.run(de)
+result = sess.run(dv)
 
 print(result)
