@@ -19,5 +19,5 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
         self.sampleValues = []
 
 
-    def sampleValues(self):
+    def getSampleValues(self):
         return self.sampleValues

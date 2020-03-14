@@ -17,7 +17,7 @@ class BaseCalculator:
 
 
 class EuropeanOptionCalculator(BaseCalculator):
-    def __init__(self, data, model, product : products.EuropeanOptionProduct):
+    def __init__(self, data, model : models.LognormalModel, product : products.EuropeanOptionProduct):
         self.data = data
         self.model = model
         self.product = product
@@ -25,25 +25,25 @@ class EuropeanOptionCalculator(BaseCalculator):
 
     def npv(self):
         strike = self.product.strike()
-        spot = model['spot']
-        volatility = model['volatility']
+        spot = model.forward()
+        volatility = model.volatility()
         dt = torch.tensor([1.0], requires_grad=True)
         return simple_torch.Black_Scholes_PyTorch(spot, strike, dt, volatility, 0)
 
 
 class MonteCarloSimulator(BaseCalculator):
-    def __init__(self, data, model, product : products.BaseProduct):
+    def __init__(self, data, model : models.BaseModel, product : products.BaseProduct):
         self.data = data
         self.model = model
         self.product = product
         # Ask the model to create an Evolution Generator
         productData = self.product.productData()
-        self.evolutionGenerator = self.model(simulationData, productData)
+        self.evolutionGenerator = self.model.createEvolutionGenerator(productData)
 
     def npv(self):
-        evolutionGenerator = evolutionGenerators.EvolutionGeneratorMonteCarloBase(self.data)
-        values = self.product.getPayoff(evolutionGenerator)
-        return torch.mean(values)
+        values = self.product.getPayoff(self.evolutionGenerator)
+        return 0
+        #return torch.mean(values)
 
 
 if __name__ == '__main__':
@@ -57,10 +57,13 @@ if __name__ == '__main__':
 
     eo = products.EuropeanOptionProduct(data, dates_underlyings)
 
-    model = {}
-    model['spot'] = torch.tensor([100.0], requires_grad=True)
-    model['volatility'] = torch.tensor([0.2], requires_grad=True)
-    model['base_date'] = datetime.date.today()
+    modelData = {}
+    forward = torch.tensor([100.0], requires_grad=True)
+    modelData['forward'] = forward
+    modelData['volatility'] = torch.tensor([0.2], requires_grad=True)
+
+    modelDate = datetime.date(year=2021, month=12, day=30)
+    model = models.LognormalModel(modelData, modelDate)
 
     data_c = []
     eoc = EuropeanOptionCalculator(data, model, eo)
@@ -68,5 +71,10 @@ if __name__ == '__main__':
     npv.backward()
 
     print(npv)
-    print(model['spot'].grad)
+    print(forward.grad)
+
+
+    mc = MonteCarloSimulator(data, model, eo)
+    npv = mc.npv()
+
 
