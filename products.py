@@ -1,5 +1,6 @@
 import datetime
 import indices
+import evolutionGenerators
 
 class BaseProduct(object):
     def __init__(self, data, dates_underlyings):
@@ -9,10 +10,21 @@ class BaseProduct(object):
     def dates_underlying(self):
         return self.dates_underylings
 
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase):
+        return 0
+
 class EuropeanOptionProduct(BaseProduct):
 
     def strike(self):
         return self.data['strike']
+
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
+        samplesValues = evolutionGenerator.sampleValues()
+        strike = self.data['strike']
+        zeros = 0
+
+        return torch.max(sampleValues - strike, zeros)
+
 
 
 if __name__ == '__main__':

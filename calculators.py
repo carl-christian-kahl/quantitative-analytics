@@ -2,9 +2,11 @@ import products
 import datetime
 import indices
 import simple_torch
+import torch
+import evolutionGenerators
 
 class BaseCalculator:
-    def __init__(selfs, data, model, product : products.BaseProduct):
+    def __init__(self, data, model, product : products.BaseProduct):
         self.data = data
         self.model = model
         self.product = product
@@ -24,8 +26,21 @@ class EuropeanOptionCalculator(BaseCalculator):
         strike = self.product.strike()
         spot = model['spot']
         volatility = model['volatility']
-        dt = 1.0
-        return 1.0
+        dt = torch.tensor([1.0], requires_grad=True)
+        return simple_torch.Black_Scholes_PyTorch(spot, strike, dt, volatility, 0)
+
+
+class MonteCarloSimulator(BaseCalculator):
+    def __init__(self, data, model, product : products.BaseProduct):
+        self.data = data
+        self.model = model
+        self.product = product
+
+
+    def npv(self):
+        evolutionGenerator = evolutionGenerators.EvolutionGeneratorMonteCarloBase(self.data)
+        values = self.product.getPayoff(evolutionGenerator)
+        return torch.mean(values)
 
 
 if __name__ == '__main__':
@@ -35,16 +50,20 @@ if __name__ == '__main__':
     dates_underlyings = {}
     dates_underlyings[expiry] = equity
     data = {}
-    data['strike'] = 100
+    data['strike'] = torch.tensor([100.0], requires_grad=True)
 
     eo = products.EuropeanOptionProduct(data, dates_underlyings)
 
     model = {}
-    model['spot'] = 100
-    model['volatility'] = 0.2
+    model['spot'] = torch.tensor([100.0], requires_grad=True)
+    model['volatility'] = torch.tensor([0.2], requires_grad=True)
     model['base_date'] = datetime.date.today()
 
     data_c = []
     eoc = EuropeanOptionCalculator(data, model, eo)
+    npv = eoc.npv()
+    npv.backward()
 
-    print(eoc.npv())
+    print(npv)
+    print(model['spot'].grad)
+
