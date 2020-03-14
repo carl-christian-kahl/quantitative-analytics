@@ -9,7 +9,7 @@ class BaseModel():
         self.data = data
         self.modelDate = modelDate
 
-    def createEvolutionGenerator(self, productData : productData.ProductDataBase):
+    def createEvolutionGenerator(self, simulationData, productData : productData.ProductDataBase):
         return 0
 
 
@@ -27,7 +27,7 @@ class LognormalModel(BaseModel):
         return self.data['volatility']
 
 
-    def createEvolutionGenerator(self, productData : productData.ProductDataBase):
+    def createEvolutionGenerator(self, simulationData, productData : productData.ProductDataBase):
         # Get the data from the model
         volatility = self.data['volatility']
         fwd = self.data['forward']
@@ -38,6 +38,4 @@ class LognormalModel(BaseModel):
         times = torch.from_numpy(np.asarray((dates[0] - self.modelDate).days/365))
         variances = volatility * volatility * times
 
-        data = {}
-
-        return evolutionGenerators.EvolutionGeneratorLognormal(data, fwd, variances)
+        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, fwd, variances)

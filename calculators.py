@@ -38,12 +38,11 @@ class MonteCarloSimulator(BaseCalculator):
         self.product = product
         # Ask the model to create an Evolution Generator
         productData = self.product.productData()
-        self.evolutionGenerator = self.model.createEvolutionGenerator(productData)
+        self.evolutionGenerator = self.model.createEvolutionGenerator(data, productData)
 
     def npv(self):
         values = self.product.getPayoff(self.evolutionGenerator)
-        return 0
-        #return torch.mean(values)
+        return torch.mean(values)
 
 
 if __name__ == '__main__':
@@ -53,7 +52,7 @@ if __name__ == '__main__':
     dates_underlyings = {}
     dates_underlyings[expiry] = equity
     data = {}
-    data['strike'] = torch.tensor([100.0], requires_grad=True)
+    data['strike'] = torch.tensor(100.0, requires_grad=True)
 
     eo = products.EuropeanOptionProduct(data, dates_underlyings)
 
@@ -62,7 +61,7 @@ if __name__ == '__main__':
     modelData['forward'] = forward
     modelData['volatility'] = torch.tensor([0.2], requires_grad=True)
 
-    modelDate = datetime.date(year=2021, month=12, day=30)
+    modelDate = datetime.date(year=2020, month=12, day=30)
     model = models.LognormalModel(modelData, modelDate)
 
     data_c = []
@@ -73,8 +72,9 @@ if __name__ == '__main__':
     print(npv)
     print(forward.grad)
 
-
-    mc = MonteCarloSimulator(data, model, eo)
+    simulationData = {}
+    simulationData['NumberOfSimulations'] = 100000
+    mc = MonteCarloSimulator(simulationData, model, eo)
     npv = mc.npv()
 
-
+    print(npv)

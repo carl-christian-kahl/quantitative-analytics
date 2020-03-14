@@ -26,11 +26,8 @@ class EuropeanOptionProduct(BaseProduct):
     def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
         sampleValues = evolutionGenerator.getSampleValues()
         strike = self.data['strike']
-        zeros = 0
 
-        return 0
-
-        #return torch.max(sampleValues - strike, zeros)
+        return torch.max(sampleValues - strike, torch.tensor(0.))
 
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
