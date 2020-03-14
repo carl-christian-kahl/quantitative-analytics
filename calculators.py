@@ -3,6 +3,7 @@ import datetime
 import indices
 import simple_torch
 import torch
+import models
 import evolutionGenerators
 
 class BaseCalculator:
@@ -35,6 +36,8 @@ class MonteCarloSimulator(BaseCalculator):
         self.data = data
         self.model = model
         self.product = product
+        # Ask the model to create an Evolution Generator
+        self.evolutionGenerator = self.model.createEvolutionGenerator(simulationData, self.product)
 
 
     def npv(self):
