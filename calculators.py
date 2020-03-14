@@ -37,8 +37,8 @@ class MonteCarloSimulator(BaseCalculator):
         self.model = model
         self.product = product
         # Ask the model to create an Evolution Generator
-        self.evolutionGenerator = self.model.createEvolutionGenerator(simulationData, self.product)
-
+        productData = self.product.productData()
+        self.evolutionGenerator = self.model(simulationData, productData)
 
     def npv(self):
         evolutionGenerator = evolutionGenerators.EvolutionGeneratorMonteCarloBase(self.data)

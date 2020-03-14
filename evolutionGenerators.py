@@ -11,10 +11,13 @@ class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
         return self.sampleValues
 
 
-class EvolutionGeneratorBlackScholes(EvolutionGeneratorMonteCarloBase):
-    def __init__(self, data):
+class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
+    def __init__(self, data, forwards, variances):
         self.data = data
+        self.forwards = forwards
+        self.variances = variances
         self.sampleValues = []
+
 
     def sampleValues(self):
         return self.sampleValues
