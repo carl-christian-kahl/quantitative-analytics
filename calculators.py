@@ -77,7 +77,7 @@ if __name__ == '__main__':
     #print(forward.grad)
 
     simulationData = {}
-    simulationData['NumberOfSimulations'] = 10000
+    simulationData['NumberOfSimulations'] = 50000
     mc = MonteCarloSimulator(simulationData, model, eo)
     npvmc = mc.npv()
     npvmc.backward()
