@@ -46,6 +46,7 @@ class MonteCarloSimulator(BaseCalculator):
 
 
 if __name__ == '__main__':
+    observationDate = datetime.date(year=2021, month=6, day=30)
     expiry = datetime.date(year=2021, month=12, day=30)
     equity = indices.EquityIndex([],"SPX")
 
@@ -56,9 +57,14 @@ if __name__ == '__main__':
     data['expiry'] = expiry
     data['index'] = equity
 
+    # Create a European Option
+    europeanOption = products.EuropeanOptionProduct(data)
 
+    data['observationDates'] = [observationDate, expiry]
 
-    eo = products.EuropeanOptionProduct(data)
+    # Create an Asian Option
+    asianOption = products.AsianOptionProduct(data)
+
 
     modelData = {}
     forward = torch.tensor([100.0], requires_grad=True)
@@ -69,7 +75,7 @@ if __name__ == '__main__':
     model = models.LognormalModel(modelData, modelDate)
 
     data_c = []
-    #eoc = EuropeanOptionCalculator(data, model, eo)
+    #eoc = EuropeanOptionCalculator(data, model, europeanOption)
     #npv = eoc.npv()
     #npv.backward()
 
@@ -78,7 +84,9 @@ if __name__ == '__main__':
 
     simulationData = {}
     simulationData['NumberOfSimulations'] = 50000
-    mc = MonteCarloSimulator(simulationData, model, eo)
+#    mc = MonteCarloSimulator(simulationData, model, europeanOption)
+    mc = MonteCarloSimulator(simulationData, model, asianOption)
+
     npvmc = mc.npv()
     npvmc.backward()
 

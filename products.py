@@ -43,6 +43,35 @@ class EuropeanOptionProduct(BaseProduct):
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
 
+class AsianOptionProduct(BaseProduct):
+
+    def __init__(self, data):
+        self.data = data
+        self.strike = self.data['strike']
+        self.observationDates = self.data['observationDates']
+        self.numberOfObservationDates = len(self.observationDates)
+
+        self.index = self.data['index']
+        self.dates_underylings = {}
+        for it in self.observationDates:
+            self.dates_underylings[it] = self.index
+
+    def getStrike(self):
+        return self.strike
+
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
+        strike = self.data['strike']
+        index = self.data['index']
+
+        indexValues = evolutionGenerator.getSampleValues(self.observationDates[0], index)
+        for i in range(self.numberOfObservationDates - 1):
+            indexValues = indexValues + evolutionGenerator.getSampleValues(self.observationDates[i], index)
+
+        return torch.max(indexValues / self.numberOfObservationDates - strike, torch.tensor(0.))
+
+    def productData(self):
+        return productData.ProductDataBase(self.dates_underylings)
+
 
 if __name__ == '__main__':
     expiry = datetime.date(year=2021, month=12, day=30)
