@@ -16,16 +16,26 @@ class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
 
 
 class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
-    def __init__(self, data, forwards, variances):
+    def __init__(self, data, dates_underlyings, forwards, variances):
         self.data = data
         self.numberOfSimulations = data['NumberOfSimulations']
         self.forwards = forwards
         self.variances = variances
-        self.sampleValues = []
+        # Simulate
+        dates = np.array(list(dates_underlyings.keys()))
 
+        z = torch.randn(size=(self.numberOfSimulations,1))
+        dW = torch.sqrt(self.variances[0]) * z - self.variances[0]/2.
+        samples = self.sampleValues = self.forwards[0]*torch.exp(dW)
+
+        # For a given timepoint store all the sample values
+        self.sampleValues = {}
+        self.sampleValues[dates[0]] = {}
+        self.sampleValues[dates[0]][dates_underlyings[dates[0]]] = samples
 
     def getSampleValues(self):
-        numberOfSimulations = self.numberOfSimulations
-        z = torch.randn(size=(numberOfSimulations,1))
-        dW = torch.sqrt(self.variances[0]) * z - self.variances[0]/2.
-        return self.forwards[0]*torch.exp(dW)
+        return self.sampleValues
+
+    def getSampleValues(self, datePoint, index):
+        return self.sampleValues[datePoint][index]
+

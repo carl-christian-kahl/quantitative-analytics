@@ -5,11 +5,11 @@ import productData
 import torch
 
 class BaseProduct(object):
-    def __init__(self, data, dates_underlyings):
+    def __init__(self, data):
         self.data = data
-        self.dates_underylings = dates_underlyings
+        self.dates_underylings = {}
 
-    def dates_underlying(self):
+    def getDatesUnderlying(self):
         return self.dates_underylings
 
     def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase):
@@ -20,14 +20,25 @@ class BaseProduct(object):
 
 class EuropeanOptionProduct(BaseProduct):
 
-    def strike(self):
-        return self.data['strike']
+    def __init__(self, data):
+        self.data = data
+        self.strike = self.data['strike']
+        self.expiry = self.data['expiry']
+        self.index = self.data['index']
+        self.dates_underylings = {}
+        self.dates_underylings[self.expiry] = self.index
+
+    def getStrike(self):
+        return self.strike
 
     def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
-        sampleValues = evolutionGenerator.getSampleValues()
         strike = self.data['strike']
+        expiry = self.data['expiry']
+        index = self.data['index']
 
-        return torch.max(sampleValues - strike, torch.tensor(0.))
+        indexValues = evolutionGenerator.getSampleValues(expiry, index)
+
+        return torch.max(indexValues - strike, torch.tensor(0.))
 
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
@@ -37,12 +48,12 @@ if __name__ == '__main__':
     expiry = datetime.date(year=2021, month=12, day=30)
     equity = indices.EquityIndex([],"SPX")
 
-    dates_underlyings = {}
-    dates_underlyings[expiry] = equity
     data = {}
     data['strike'] = 100
+    data['expiry'] = expiry
+    data['index'] = equity
 
-    eo = EuropeanOptionProduct(data, dates_underlyings)
+    eo = EuropeanOptionProduct(data)
 
-    print(eo.dates_underlying())
-    print(eo.strike())
+    print(eo.getDatesUnderlying())
+    print(eo.getStrike())

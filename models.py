@@ -38,4 +38,4 @@ class LognormalModel(BaseModel):
         times = torch.from_numpy(np.asarray((dates[0] - self.modelDate).days/365))
         variances = volatility * volatility * times
 
-        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, fwd, variances)
+        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, dates_underlyings, fwd, variances)

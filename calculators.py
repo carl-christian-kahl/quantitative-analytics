@@ -53,8 +53,12 @@ if __name__ == '__main__':
     dates_underlyings[expiry] = equity
     data = {}
     data['strike'] = torch.tensor(100.0, requires_grad=True)
+    data['expiry'] = expiry
+    data['index'] = equity
 
-    eo = products.EuropeanOptionProduct(data, dates_underlyings)
+
+
+    eo = products.EuropeanOptionProduct(data)
 
     modelData = {}
     forward = torch.tensor([100.0], requires_grad=True)
@@ -65,16 +69,18 @@ if __name__ == '__main__':
     model = models.LognormalModel(modelData, modelDate)
 
     data_c = []
-    eoc = EuropeanOptionCalculator(data, model, eo)
-    npv = eoc.npv()
-    npv.backward()
+    #eoc = EuropeanOptionCalculator(data, model, eo)
+    #npv = eoc.npv()
+    #npv.backward()
 
-    print(npv)
-    print(forward.grad)
+    #print(npv)
+    #print(forward.grad)
 
     simulationData = {}
-    simulationData['NumberOfSimulations'] = 100000
+    simulationData['NumberOfSimulations'] = 10000
     mc = MonteCarloSimulator(simulationData, model, eo)
-    npv = mc.npv()
+    npvmc = mc.npv()
+    npvmc.backward()
 
-    print(npv)
+    print(npvmc)
+    print(forward.grad)
