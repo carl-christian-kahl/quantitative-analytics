@@ -3,6 +3,8 @@ import productData
 import numpy as np
 import datetime
 import torch
+import marketdatarepository
+import marketdata
 
 class BaseModel():
     def __init__(self, data, modelDate : datetime.datetime):
@@ -37,11 +39,20 @@ class LognormalModel(BaseModel):
         dates = np.array(list(dates_underlyings.keys()))
 
         var = []
+        underlyings = []
         lastDate = self.modelDate
         for it in dates_underlyings.keys():
             dt = torch.from_numpy(np.asarray((it - lastDate).days / 365))
             var.append( volatility * volatility * dt )
+            underlyings.append(dates_underlyings[it])
             lastDate = it
+
+        underlyings = list(set(underlyings))
+
+        # Get spot out of the repository
+        spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
+
+        fwd = spot_md.getValue()
 
         variances = torch.tensor(var)
 

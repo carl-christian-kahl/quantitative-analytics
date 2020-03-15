@@ -4,6 +4,8 @@ import indices
 import simple_torch
 import torch
 import models
+import marketdatarepository
+import marketdata
 import evolutionGenerators
 
 class BaseCalculator:
@@ -50,6 +52,11 @@ if __name__ == '__main__':
     expiry = datetime.date(year=2021, month=12, day=30)
     equity = indices.EquityIndex([],"SPX")
 
+    forward = torch.tensor([100.0], requires_grad=True)
+    md = marketdata.MarketDataEquitySpotBase(equity, forward)
+
+    marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)
+
     dates_underlyings = {}
     dates_underlyings[expiry] = equity
     data = {}
@@ -67,7 +74,6 @@ if __name__ == '__main__':
 
 
     modelData = {}
-    forward = torch.tensor([100.0], requires_grad=True)
     modelData['forward'] = forward
     modelData['volatility'] = torch.tensor([0.2], requires_grad=True)
 

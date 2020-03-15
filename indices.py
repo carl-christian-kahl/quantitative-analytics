@@ -3,7 +3,7 @@ class BaseIndex(object):
         self.data = data
         self.index_string = index_string
 
-    def index_string(self):
+    def getIndexString(self):
         return self.index_string
 
     def index_type(self):
