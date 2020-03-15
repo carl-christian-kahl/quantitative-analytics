@@ -35,7 +35,7 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
         self.sampleValues = {}
 
         for i,it in enumerate(dates):
-            dW = torch.sqrt(self.variances[0]) * z[:,i] - self.variances[0]/2.
+            dW = torch.sqrt(self.variances[i]) * z[:,i] - self.variances[i]/2.
             logsamples = logsamples + dW
 
             self.sampleValues[it] = {}

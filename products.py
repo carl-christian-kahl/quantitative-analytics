@@ -56,22 +56,15 @@ class AsianOptionProduct(BaseProduct):
         for it in self.observationDates:
             self.dates_underylings[it] = self.index
 
-    def getStrike(self):
-        return self.strike
-
     def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
         strike = self.data['strike']
         index = self.data['index']
 
-        indexValues = evolutionGenerator.getSampleValues(self.observationDates[0], index)
-        for i in range(self.numberOfObservationDates - 1):
-            indexValues = indexValues + evolutionGenerator.getSampleValues(self.observationDates[i], index)
+        avg = torch.tensor(0.)
+        for it in self.observationDates :
+            avg = avg + evolutionGenerator.getSampleValues(it, index)
 
-        return torch.max(indexValues / self.numberOfObservationDates - strike, torch.tensor(0.))
-
-    def productData(self):
-        return productData.ProductDataBase(self.dates_underylings)
-
+        return torch.max(avg / torch.tensor(self.numberOfObservationDates) - strike, torch.tensor(0.))
 
 if __name__ == '__main__':
     expiry = datetime.date(year=2021, month=12, day=30)

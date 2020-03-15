@@ -35,8 +35,15 @@ class LognormalModel(BaseModel):
         # Derive the timeline from the product
         dates_underlyings = productData.getDatesUnderlyings()
         dates = np.array(list(dates_underlyings.keys()))
-        times = torch.from_numpy(np.asarray((dates[0] - self.modelDate).days/365))
-        variances = volatility * volatility * times
+
+        var = []
+        lastDate = self.modelDate
+        for it in dates_underlyings.keys():
+            dt = torch.from_numpy(np.asarray((it - lastDate).days / 365))
+            var.append( volatility * volatility * dt )
+            lastDate = it
+
+        variances = torch.tensor(var)
 
 
         return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, dates_underlyings, fwd, variances)

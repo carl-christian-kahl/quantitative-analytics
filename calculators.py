@@ -83,7 +83,7 @@ if __name__ == '__main__':
     #print(forward.grad)
 
     simulationData = {}
-    simulationData['NumberOfSimulations'] = 50000
+    simulationData['NumberOfSimulations'] = 100000
 #    mc = MonteCarloSimulator(simulationData, model, europeanOption)
     mc = MonteCarloSimulator(simulationData, model, asianOption)
 
