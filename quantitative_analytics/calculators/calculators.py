@@ -43,7 +43,11 @@ class MonteCarloSimulator(BaseCalculator):
 
     def npv(self):
         values = self.product.getPayoff(self.evolutionGenerator)
-        return torch.mean(values)
+
+        results = []
+        for it in values:
+            results.append(torch.mean(it))
+        return torch.stack(results)
 
 
 if __name__ == '__main__':
@@ -93,12 +97,20 @@ if __name__ == '__main__':
 
     simulationData = {}
     simulationData['NumberOfSimulations'] = 100000
-#    mc = MonteCarloSimulator(simulationData, model, europeanOption)
-    mc = MonteCarloSimulator(simulationData, model, asianOption)
+    mc = MonteCarloSimulator(simulationData, model, europeanOption)
+#    mc = MonteCarloSimulator(simulationData, model, asianOption)
 
-    npvmc = mc.npv()
-    npvmc.backward()
+    with torch.autograd.profiler.profile() as prof:
+        npvmc = mc.npv()
+
+        for it in npvmc:
+            it.backward(retain_graph=True)
+    #npvmc.backward()
+    #torch.autograd.grad(npvmc)
+    #torch.autograd.backward(npvmc, grad_outputs=npvmc.data.new(npvmc.shape).fill_(1))
 
     print(npvmc)
     print(forward.grad)
     print(volatilityValues.grad)
+
+    #print(prof.key_averages())

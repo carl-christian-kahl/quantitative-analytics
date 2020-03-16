@@ -38,7 +38,7 @@ class EuropeanOptionProduct(BaseProduct):
 
         indexValues = evolutionGenerator.getSampleValues(expiry, index)
 
-        return torch.max(indexValues - strike, torch.tensor(0.))
+        return [torch.max(indexValues - strike, torch.tensor(0.))]
 
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
@@ -64,7 +64,7 @@ class AsianOptionProduct(BaseProduct):
         for it in self.observationDates :
             avg = avg + evolutionGenerator.getSampleValues(it, index)
 
-        return torch.max(avg / torch.tensor(self.numberOfObservationDates) - strike, torch.tensor(0.))
+        return [avg / torch.tensor(self.numberOfObservationDates), torch.max(avg / torch.tensor(self.numberOfObservationDates) - strike, torch.tensor(0.))]
 
 if __name__ == '__main__':
     expiry = datetime.date(year=2021, month=12, day=30)
