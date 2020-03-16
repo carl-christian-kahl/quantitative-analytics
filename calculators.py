@@ -54,8 +54,12 @@ if __name__ == '__main__':
 
     forward = torch.tensor([100.0], requires_grad=True)
     md = marketdata.MarketDataEquitySpotBase(equity, forward)
-
     marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)
+
+    dates = [observationDate, expiry]
+    volatilityValues = torch.tensor([0.2,0.2], requires_grad=True)
+    volatilityMarketData = marketdata.BlackVolatilityMarketData(equity,dates,volatilityValues)
+    marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData)
 
     dates_underlyings = {}
     dates_underlyings[expiry] = equity
@@ -98,3 +102,4 @@ if __name__ == '__main__':
 
     print(npvmc)
     print(forward.grad)
+    print(volatilityValues.grad)

@@ -5,20 +5,33 @@ import datetime
 import torch
 import marketdatarepository
 import marketdata
+import curves
+import interpolate
 
 class BaseModel():
     def __init__(self, data, modelDate : datetime.datetime):
         self.data = data
         self.modelDate = modelDate
+        self.internalCurves = {}
 
     def createEvolutionGenerator(self, simulationData, productData : productData.ProductDataBase):
         return 0
 
+    def createCurveFromMarketData(self, marketData : marketdata.MarketDataBase):
+        return 0
+
+    def createCurveFromMarketData(self, marketData : marketdata.MarketDataBase, productData : productData.ProductDataBase):
+        return 0
+
+    def datesToTimes(self, dates):
+        times = [(it - self.modelDate).days / 365. for it in dates]
+        return times
 
 class LognormalModel(BaseModel):
     def __init__(self, data, modelDate : datetime.datetime):
         self.data = data
         self.modelDate = modelDate
+        self.internalCurves = {}
 
         # This should come from the the market data
 
@@ -28,33 +41,63 @@ class LognormalModel(BaseModel):
     def volatility(self):
         return self.data['volatility']
 
+    def createCurveFromMarketData(self, marketDataItem : marketdata.BlackVolatilityMarketData):
+        dates = marketDataItem.getDates()
+        values = marketDataItem.getValues()
+        times = self.datesToTimes(dates)
+
+        volatilityInterpolator = interpolate.BaseInterpolator(times,values)
+
+        return curves.BlackVolatilitySurface(volatilityInterpolator)
+
 
     def createEvolutionGenerator(self, simulationData, productData : productData.ProductDataBase):
-        # Get the data from the model
-        volatility = self.data['volatility']
-        fwd = self.data['forward']
-
         # Derive the timeline from the product
         dates_underlyings = productData.getDatesUnderlyings()
         dates = np.array(list(dates_underlyings.keys()))
 
-        var = []
         underlyings = []
-        lastDate = self.modelDate
         for it in dates_underlyings.keys():
-            dt = torch.from_numpy(np.asarray((it - lastDate).days / 365))
-            var.append( volatility * volatility * dt )
             underlyings.append(dates_underlyings[it])
-            lastDate = it
 
         underlyings = list(set(underlyings))
 
         # Get spot out of the repository
         spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
-
         fwd = spot_md.getValue()
 
-        variances = torch.tensor(var)
+        volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(marketdata.BlackVolatilityMarketData.getClassTag(), underlyings[0])
+        vol_curve = self.createCurveFromMarketData(volatilityMarketData)
+
+        forwardVariance = []
+        times = self.datesToTimes(dates)
+        lastTime = 0
+        lastVar = 0
+        for it in times:
+            vol = vol_curve.getVolatility(it)
+            var = it * vol * vol
+            forwardVariance.append( var - lastVar )
+            lastVar = var
+
+        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, dates_underlyings, fwd, forwardVariance)
 
 
-        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, dates_underlyings, fwd, variances)
+if __name__ == '__main__':
+    observationDate = datetime.date(year=2021, month=6, day=30)
+    expiry = datetime.date(year=2021, month=12, day=30)
+    dates = [observationDate, expiry]
+    values = torch.tensor([0.2,0.4])
+
+    data = []
+    volatilityMarketData = marketdata.BlackVolatilityMarketData(data,dates,values)
+
+    modelData = []
+    modelDate = datetime.date(year=2020, month=12, day=30)
+    model = LognormalModel(modelData, modelDate)
+
+    volatilityCurve = model.createCurveFromMarketData(volatilityMarketData)
+
+    print(volatilityCurve.getVolatility(0.75))
+
+    times = model.datesToTimes(dates)
+    print(times)
