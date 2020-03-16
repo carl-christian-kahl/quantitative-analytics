@@ -25,11 +25,24 @@ class EuropeanOptionCalculator(BaseCalculator):
 
 
     def npv(self):
-        strike = self.product.strike()
-        spot = model.forward()
-        volatility = model.volatility()
-        dt = torch.tensor([1.0], requires_grad=True)
-        return simple_torch.Black_Scholes_PyTorch(spot, strike, dt, volatility, 0)
+        strike = self.product.getStrike()
+        index = self.product.getIndex()
+
+        # Get spot out of the repository
+        spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
+            marketdata.MarketDataEquitySpotBase.getClassTag(), index)
+        fwd = spot_md.getValue()
+
+        volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
+            marketdata.BlackVolatilityMarketData.getClassTag(), index)
+        vol_curve = self.createCurveFromMarketData(volatilityMarketData)
+
+        datePoint = self.product.getExpiry()
+        timePoint = self.model.dateToTime(datePoint)
+
+        spot = fwd
+        volatility = vol_curve.getVolatility(dt)
+        return simple_torch.Black_Scholes_PyTorch(spot, strike, timePoint, volatility, 0)
 
 
 class MonteCarloSimulator(BaseCalculator):

@@ -23,6 +23,9 @@ class BaseModel():
     def createCurveFromMarketData(self, marketData : marketdata.MarketDataBase, productData : productData.ProductDataBase):
         return 0
 
+    def dateToTime(self, date):
+        return (date - self.modelDate).days / 365.
+
     def datesToTimes(self, dates):
         times = [(it - self.modelDate).days / 365. for it in dates]
         return times

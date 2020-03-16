@@ -31,6 +31,12 @@ class EuropeanOptionProduct(BaseProduct):
     def getStrike(self):
         return self.strike
 
+    def getIndex(self):
+        return self.index
+
+    def getExpiry(self):
+        return self.expiry
+
     def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
         strike = self.data['strike']
         expiry = self.data['expiry']
