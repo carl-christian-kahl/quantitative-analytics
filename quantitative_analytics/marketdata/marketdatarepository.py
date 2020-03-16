@@ -1,8 +1,7 @@
-import marketdata
 import torch
-import indices
-import marketdatarepository
-import marketdata
+from quantitative_analytics.indices import indices
+from quantitative_analytics.marketdata import marketdata
+
 
 class MarketDataRepository():
     def __init__(self):
@@ -21,7 +20,7 @@ class MarketDataRepository():
 marketDataRepositorySingleton = MarketDataRepository()
 
 if __name__ == '__main__':
-    equityIndex = indices.EquityIndex([],"SPX")
+    equityIndex = indices.EquityIndex([], "SPX")
     md = marketdata.MarketDataEquitySpotBase(equityIndex, torch.tensor(100.))
 
     marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)

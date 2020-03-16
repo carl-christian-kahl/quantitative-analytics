@@ -1,6 +1,6 @@
 import torch
 import numpy as np
-import models
+
 
 class EvolutionGeneratorBase:
     def __init__(self, data):

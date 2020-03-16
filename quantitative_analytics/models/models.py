@@ -1,12 +1,12 @@
-import evolutionGenerators
-import productData
+from quantitative_analytics.calculators.evolutionGenerators import evolutionGenerators
+from quantitative_analytics.products import productData
 import numpy as np
 import datetime
 import torch
-import marketdatarepository
-import marketdata
-import curves
-import interpolate
+from quantitative_analytics.marketdata import marketdata, marketdatarepository
+from quantitative_analytics.curves import curves
+from quantitative_analytics.interpolators import interpolate
+
 
 class BaseModel():
     def __init__(self, data, modelDate : datetime.datetime):
@@ -46,7 +46,7 @@ class LognormalModel(BaseModel):
         values = marketDataItem.getValues()
         times = self.datesToTimes(dates)
 
-        volatilityInterpolator = interpolate.BaseInterpolator(times,values)
+        volatilityInterpolator = interpolate.BaseInterpolator(times, values)
 
         return curves.BlackVolatilitySurface(volatilityInterpolator)
 
@@ -63,10 +63,12 @@ class LognormalModel(BaseModel):
         underlyings = list(set(underlyings))
 
         # Get spot out of the repository
-        spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
+        spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
+            marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
         fwd = spot_md.getValue()
 
-        volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(marketdata.BlackVolatilityMarketData.getClassTag(), underlyings[0])
+        volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
+            marketdata.BlackVolatilityMarketData.getClassTag(), underlyings[0])
         vol_curve = self.createCurveFromMarketData(volatilityMarketData)
 
         forwardVariance = []
@@ -89,7 +91,7 @@ if __name__ == '__main__':
     values = torch.tensor([0.2,0.4])
 
     data = []
-    volatilityMarketData = marketdata.BlackVolatilityMarketData(data,dates,values)
+    volatilityMarketData = marketdata.BlackVolatilityMarketData(data, dates, values)
 
     modelData = []
     modelDate = datetime.date(year=2020, month=12, day=30)
