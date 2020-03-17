@@ -1,11 +1,12 @@
 from quantitative_analytics.products import products
 import datetime
-from quantitative_analytics.indices import indices
+from quantitative_analytics.indices import indices, indexfixingrepository
 import simple_torch
 import torch
 from quantitative_analytics.models import models
 from quantitative_analytics.marketdata import marketdata, marketdatarepository
 from quantitative_analytics.analytics import blackanalytics
+
 
 class BaseCalculator:
     def __init__(self, data, model, product : products.BaseProduct):
@@ -42,7 +43,7 @@ class EuropeanOptionCalculator(BaseCalculator):
 
         spot = fwd
         volatility = vol_curve.getVolatility(timePoint)
-        return blackanalytics.black(spot, strike, timePoint, volatility, 0)
+        return [blackanalytics.black(spot, strike, timePoint, volatility, 0)]
 
 
 class MonteCarloSimulator(BaseCalculator):
@@ -67,11 +68,14 @@ class MonteCarloSimulator(BaseCalculator):
         return torch.stack(results)
 
 if __name__ == '__main__':
-    observationDate = datetime.date(year=2021, month=6, day=30)
+    observationDate = datetime.date(year=2019, month=6, day=30)
     expiry = datetime.date(year=2021, month=12, day=30)
     equity = indices.EquityIndex([], "SPX")
 
-    forward = torch.tensor([100.0], requires_grad=True)
+    spot_fixing = torch.tensor(100.0, requires_grad=True)
+    indexfixingrepository.indexFixingRepositorySingleton.storeFixing(equity,observationDate,spot_fixing)
+
+    forward = torch.tensor(100.0, requires_grad=True)
     md = marketdata.MarketDataEquitySpotBase(equity, forward)
     marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)
 
@@ -104,7 +108,7 @@ if __name__ == '__main__':
     model = models.LognormalModel(modelData, modelDate)
 
     data_c = []
-    #eoc = EuropeanOptionCalculator(data, model, europeanOption)
+    eoc = EuropeanOptionCalculator(data, model, europeanOption)
     #npv = eoc.npv()
     #npv.backward()
 
@@ -113,20 +117,22 @@ if __name__ == '__main__':
 
     simulationData = {}
     simulationData['NumberOfSimulations'] = 100000
-    #mc = MonteCarloSimulator(simulationData, model, europeanOption)
+    mc = MonteCarloSimulator(simulationData, model, europeanOption)
     mc = MonteCarloSimulator(simulationData, model, asianOption)
 
-    with torch.autograd.profiler.profile() as prof:
-        npvmc = mc.npv()
+    npvmc = mc.npv()
 
-        for it in npvmc:
-            it.backward(retain_graph=True)
+    print(npvmc)
+
+    dx, = torch.autograd.grad(npvmc[1], forward, create_graph=True, retain_graph=True)
+
+    print(dx)
+
+    #ddx, = torch.autograd.grad(dx, forward, create_graph=True)
+
+    #print(ddx)
+
     #npvmc.backward()
     #torch.autograd.grad(npvmc)
     #torch.autograd.backward(npvmc, grad_outputs=npvmc.data.new(npvmc.shape).fill_(1))
 
-    print(npvmc)
-    print(forward.grad)
-    print(volatilityValues.grad)
-
-    #print(prof.key_averages())

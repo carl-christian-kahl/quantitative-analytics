@@ -17,17 +17,16 @@ class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
         return 0
 
 class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
-    def __init__(self, data, indexObservations, dates_underlyings, variances):
+    def __init__(self, data, indexObservations, futureDates, variances):
         self.data = data
         self.numberOfSimulations = data['NumberOfSimulations']
         self.variances = variances
-        self.dates_underlyings = dates_underlyings
+        self.dates = futureDates
         self.indexObservations = indexObservations
 
     def createStateTensor(self):
         # Simulate this is really where most of the effort is going to be
-        dates = np.array(list(self.dates_underlyings.keys()))
-        n = len(self.dates_underlyings)
+        n = len(self.dates)
 
         # Draw random numbers
         z = torch.randn(size=(self.numberOfSimulations,n))
@@ -36,7 +35,7 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
 
         sampleValues = {}
 
-        for i,it in enumerate(dates):
+        for i,it in enumerate(self.dates):
             dW = torch.sqrt(self.variances[i]) * z[:,i] - self.variances[i]/2.
             logsamples = logsamples + dW
 
@@ -45,4 +44,4 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
         return sampleValues
 
     def getValue(self, date, index, stateTensor):
-        return self.indexObservations[index][date].getValue(stateTensor[date])
+        return self.indexObservations[index][date].getValue(date,stateTensor)

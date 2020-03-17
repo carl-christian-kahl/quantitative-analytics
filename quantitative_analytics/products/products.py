@@ -4,17 +4,6 @@ from quantitative_analytics.calculators.evolutionGenerators import evolutionGene
 from quantitative_analytics.products import productData
 import torch
 
-class SimulationWorkspace():
-    def __init__(self, baseDate, sampleValues, fixingValues):
-        self.sampleValues = sampleValues
-        self.fixingValues = fixingValues
-        self.baseDate = baseDate
-
-    def getSamples(self, date, index):
-        if date > self.baseDate:
-            return self.sampleValues[date][index]
-        else:
-            return self.fixingValues[date][index]
 
 class BaseProduct(object):
     def __init__(self, data):
@@ -23,9 +12,6 @@ class BaseProduct(object):
 
     def getDatesUnderlying(self):
         return self.dates_underylings
-
-    def getPayoff(self, simulationWorkspaceItem : SimulationWorkspace):
-        return 0
 
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
@@ -49,12 +35,12 @@ class EuropeanOptionProduct(BaseProduct):
     def getExpiry(self):
         return self.expiry
 
-    def getPayoff(self, simulationWorkspaceItem : SimulationWorkspace):
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor):
         strike = self.data['strike']
         expiry = self.data['expiry']
         index = self.data['index']
 
-        indexValues = simulationWorkspaceItem.getSamples(expiry,index)
+        indexValues = evolutionGenerator.getValue(expiry,index,stateTensor)
 
         return [torch.max(indexValues - strike, torch.tensor(0.))]
 

@@ -10,6 +10,8 @@ def Black_Scholes_PyTorch(s, k, dt, v, r):
     d2 = d1 - sdt
     return s * n(d1) - k * torch.exp(-r * dt) * n(d2)
 
+def f(x):
+    return x*x
 
 if __name__ == '__main__':
 
@@ -30,4 +32,18 @@ if __name__ == '__main__':
     print(spot.grad)
     print(sigma.grad)
     print(rate.grad)
+
+    x = torch.tensor(5.0, requires_grad=True)
+
+    y = f(x)
+
+    print(y)
+
+    dx, = torch.autograd.grad(y,x,create_graph=True, retain_graph=True)
+
+    print(dx)
+
+    ddx, = torch.autograd.grad(dx,x,create_graph=True, retain_graph=True)
+
+    print(ddx)
 

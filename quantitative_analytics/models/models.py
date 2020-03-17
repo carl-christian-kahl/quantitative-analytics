@@ -7,6 +7,7 @@ from quantitative_analytics.marketdata import marketdata, marketdatarepository
 from quantitative_analytics.curves import curves
 from quantitative_analytics.interpolators import interpolate
 from quantitative_analytics.products import indexObservation
+from quantitative_analytics.indices import indexfixingrepository
 
 
 class BaseModel():
@@ -64,12 +65,18 @@ class LognormalModel(BaseModel):
         dates = np.array(list(dates_underlyings.keys()))
 
         underlyings = []
+        historicalDates = []
+        futureDates = []
+
         for it in dates_underlyings.keys():
             underlyings.append(dates_underlyings[it])
+            if it > self.modelDate:
+                futureDates.append(it)
+            else:
+                historicalDates.append(it)
+
 
         underlyings = list(set(underlyings))
-
-
 
         # Get spot out of the repository
         spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
@@ -81,7 +88,7 @@ class LognormalModel(BaseModel):
         vol_curve = self.createCurveFromMarketData(volatilityMarketData)
 
         forwardVariance = []
-        times = self.datesToTimes(dates)
+        times = self.datesToTimes(futureDates)
         lastTime = 0
         lastVar = 0
         for it in times:
@@ -92,11 +99,17 @@ class LognormalModel(BaseModel):
 
         indexObservations = {}
         indexObservations[underlyings[0]] = {}
+
         # Here we can very easily differentiate future and past
-        for it in dates_underlyings.keys():
+        for it in historicalDates:
+            # Get spot out of the repository
+            value = indexfixingrepository.indexFixingRepositorySingleton.getFixing(underlyings[0],it)
+            indexObservations[underlyings[0]][it] = indexObservation.IndexObservationConstant(value)
+
+        for it in futureDates:
             indexObservations[underlyings[0]][it] = indexObservation.IndexObservationScaledExponential(fwd)
 
-        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations, dates_underlyings, forwardVariance)
+        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations, futureDates, forwardVariance)
 
 
 if __name__ == '__main__':
