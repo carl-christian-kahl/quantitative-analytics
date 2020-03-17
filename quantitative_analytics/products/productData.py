@@ -4,3 +4,4 @@ class ProductDataBase():
 
     def getDatesUnderlyings(self):
         return self.dates_underlyings
+

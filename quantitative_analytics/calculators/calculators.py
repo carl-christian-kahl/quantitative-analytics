@@ -58,9 +58,8 @@ class MonteCarloSimulator(BaseCalculator):
 
     def npv(self):
         # Split this off as this is the time consuming part
-        sampleValues = self.evolutionGenerator.getSampleValues()
-        simulationWorkspaceItem = products.SimulationWorkspace(self.baseDate, sampleValues, self.fixingValues)
-        values = self.product.getPayoff(simulationWorkspaceItem)
+        stateTensor = self.evolutionGenerator.createStateTensor()
+        values = self.product.getPayoff(self.evolutionGenerator, stateTensor)
 
         results = []
         for it in values:

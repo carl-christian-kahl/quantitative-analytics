@@ -6,6 +6,7 @@ import torch
 from quantitative_analytics.marketdata import marketdata, marketdatarepository
 from quantitative_analytics.curves import curves
 from quantitative_analytics.interpolators import interpolate
+from quantitative_analytics.products import indexObservation
 
 
 class BaseModel():
@@ -68,6 +69,8 @@ class LognormalModel(BaseModel):
 
         underlyings = list(set(underlyings))
 
+
+
         # Get spot out of the repository
         spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
             marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
@@ -87,7 +90,13 @@ class LognormalModel(BaseModel):
             forwardVariance.append( var - lastVar )
             lastVar = var
 
-        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, dates_underlyings, fwd, forwardVariance)
+        indexObservations = {}
+        indexObservations[underlyings[0]] = {}
+        # Here we can very easily differentiate future and past
+        for it in dates_underlyings.keys():
+            indexObservations[underlyings[0]][it] = indexObservation.IndexObservationScaledExponential(fwd)
+
+        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations, dates_underlyings, forwardVariance)
 
 
 if __name__ == '__main__':

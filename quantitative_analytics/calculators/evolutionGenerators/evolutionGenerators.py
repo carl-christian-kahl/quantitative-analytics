@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 
+
 torch.manual_seed(2)
 
 class EvolutionGeneratorBase:
@@ -8,20 +9,22 @@ class EvolutionGeneratorBase:
         self.data = data
 
 class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
-    def __init__(self, data):
+    def __init__(self, data, indexObservationMaps):
         self.data = data
         self.numberOfSimulations = data['NumberOfSimulations']
 
+    def getValue(self, date, index, stateTensor):
+        return 0
 
 class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
-    def __init__(self, data, dates_underlyings, forwards, variances):
+    def __init__(self, data, indexObservations, dates_underlyings, variances):
         self.data = data
         self.numberOfSimulations = data['NumberOfSimulations']
-        self.forwards = forwards
         self.variances = variances
         self.dates_underlyings = dates_underlyings
+        self.indexObservations = indexObservations
 
-    def getSampleValues(self):
+    def createStateTensor(self):
         # Simulate this is really where most of the effort is going to be
         dates = np.array(list(self.dates_underlyings.keys()))
         n = len(self.dates_underlyings)
@@ -37,7 +40,9 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
             dW = torch.sqrt(self.variances[i]) * z[:,i] - self.variances[i]/2.
             logsamples = logsamples + dW
 
-            sampleValues[it] = {}
-            sampleValues[it][self.dates_underlyings[it]] = self.forwards[0]*torch.exp(logsamples)
+            sampleValues[it] = logsamples
 
         return sampleValues
+
+    def getValue(self, date, index, stateTensor):
+        return self.indexObservations[index][date].getValue(stateTensor[date])

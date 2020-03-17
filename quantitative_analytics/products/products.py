@@ -74,13 +74,13 @@ class AsianOptionProduct(BaseProduct):
         for it in self.observationDates:
             self.dates_underylings[it] = self.index
 
-    def getPayoff(self, simulationWorkspaceItem : SimulationWorkspace):
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor):
         strike = self.data['strike']
         index = self.data['index']
 
         avg = torch.tensor(0.)
         for it in self.observationDates :
-            avg = avg + simulationWorkspaceItem.getSamples(it,index)
+            avg = avg + evolutionGenerator.getValue(it,index,stateTensor)
 
         return [avg / torch.tensor(self.numberOfObservationDates), torch.max(avg / torch.tensor(self.numberOfObservationDates) - strike, torch.tensor(0.))]
 
