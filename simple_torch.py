@@ -1,6 +1,9 @@
 #pip3 install https://download.pytorch.org/whl/cpu/torch-1.0.1-cp37-cp37m-win_amd64.whl
 import time
 import torch
+import math
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 def Black_Scholes_PyTorch(s, k, dt, v, r):
@@ -12,6 +15,9 @@ def Black_Scholes_PyTorch(s, k, dt, v, r):
 
 def f(x):
     return x*x
+
+def he(x,e):
+    return 0.5*(1.+2./math.pi*np.arctan(x/e))
 
 if __name__ == '__main__':
 
@@ -47,3 +53,28 @@ if __name__ == '__main__':
 
     print(ddx)
 
+    torch.manual_seed(42)
+
+    n = 2
+    m = 1000000
+
+    x = torch.tensor(range(1, n + 1), dtype=torch.float64, requires_grad=True)
+    print(x)
+    k = torch.tensor(0.01, dtype=torch.float64, requires_grad=True)
+    k1 = k.detach().requires_grad_()
+
+    f = torch.mean(torch.atan(torch.randn(m, 1, dtype=torch.float64)-k))
+    print(f)
+
+    g = torch.autograd.grad(f, k, create_graph=True, retain_graph=True)
+    print(g)
+    h1 = torch.autograd.grad(g, k, retain_graph=True)
+    #h2 = torch.autograd.grad(g, k, retain_graph=True)
+    #h = torch.stack([h1, h2])
+    print(h1)
+
+    x = np.linspace(-1,1,100)
+    y = he(x,0.001)*x
+
+    plt.plot(x,y)
+    plt.show()

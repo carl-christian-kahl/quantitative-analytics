@@ -2,6 +2,7 @@ import datetime
 from quantitative_analytics.indices import indices
 from quantitative_analytics.calculators.evolutionGenerators import evolutionGenerators
 from quantitative_analytics.products import productData
+from quantitative_analytics.analytics import functionapproximation
 import torch
 
 
@@ -42,7 +43,7 @@ class EuropeanOptionProduct(BaseProduct):
 
         indexValues = evolutionGenerator.getValue(expiry,index,stateTensor)
 
-        return [torch.max(indexValues - strike, torch.tensor(0.))]
+        return [functionapproximation.callsmooth(indexValues,strike)]
 
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
