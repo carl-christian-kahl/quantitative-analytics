@@ -5,7 +5,7 @@ import simple_torch
 import torch
 from quantitative_analytics.models import models
 from quantitative_analytics.marketdata import marketdata, marketdatarepository
-
+from quantitative_analytics.analytics import blackanalytics
 
 class BaseCalculator:
     def __init__(self, data, model, product : products.BaseProduct):
@@ -35,14 +35,14 @@ class EuropeanOptionCalculator(BaseCalculator):
 
         volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
             marketdata.BlackVolatilityMarketData.getClassTag(), index)
-        vol_curve = self.createCurveFromMarketData(volatilityMarketData)
+        vol_curve = self.model.createCurveFromMarketData(volatilityMarketData)
 
         datePoint = self.product.getExpiry()
-        timePoint = self.model.dateToTime(datePoint)
+        timePoint = torch.tensor(self.model.dateToTime(datePoint))
 
         spot = fwd
-        volatility = vol_curve.getVolatility(dt)
-        return simple_torch.Black_Scholes_PyTorch(spot, strike, timePoint, volatility, 0)
+        volatility = vol_curve.getVolatility(timePoint)
+        return blackanalytics.black(spot, strike, timePoint, volatility, 0)
 
 
 class MonteCarloSimulator(BaseCalculator):
@@ -50,18 +50,22 @@ class MonteCarloSimulator(BaseCalculator):
         self.data = data
         self.model = model
         self.product = product
+        self.baseDate = model.getBaseDate()
         # Ask the model to create an Evolution Generator
         productData = self.product.productData()
+        self.fixingValues = []
         self.evolutionGenerator = self.model.createEvolutionGenerator(data, productData)
 
     def npv(self):
-        values = self.product.getPayoff(self.evolutionGenerator)
+        # Split this off as this is the time consuming part
+        sampleValues = self.evolutionGenerator.getSampleValues()
+        simulationWorkspaceItem = products.SimulationWorkspace(self.baseDate, sampleValues, self.fixingValues)
+        values = self.product.getPayoff(simulationWorkspaceItem)
 
         results = []
         for it in values:
             results.append(torch.mean(it))
         return torch.stack(results)
-
 
 if __name__ == '__main__':
     observationDate = datetime.date(year=2021, month=6, day=30)
@@ -110,8 +114,8 @@ if __name__ == '__main__':
 
     simulationData = {}
     simulationData['NumberOfSimulations'] = 100000
-    mc = MonteCarloSimulator(simulationData, model, europeanOption)
-#    mc = MonteCarloSimulator(simulationData, model, asianOption)
+    #mc = MonteCarloSimulator(simulationData, model, europeanOption)
+    mc = MonteCarloSimulator(simulationData, model, asianOption)
 
     with torch.autograd.profiler.profile() as prof:
         npvmc = mc.npv()

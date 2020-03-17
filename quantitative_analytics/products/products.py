@@ -4,6 +4,18 @@ from quantitative_analytics.calculators.evolutionGenerators import evolutionGene
 from quantitative_analytics.products import productData
 import torch
 
+class SimulationWorkspace():
+    def __init__(self, baseDate, sampleValues, fixingValues):
+        self.sampleValues = sampleValues
+        self.fixingValues = fixingValues
+        self.baseDate = baseDate
+
+    def getSamples(self, date, index):
+        if date > self.baseDate:
+            return self.sampleValues[date][index]
+        else:
+            return self.fixingValues[date][index]
+
 class BaseProduct(object):
     def __init__(self, data):
         self.data = data
@@ -12,7 +24,7 @@ class BaseProduct(object):
     def getDatesUnderlying(self):
         return self.dates_underylings
 
-    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase):
+    def getPayoff(self, simulationWorkspaceItem : SimulationWorkspace):
         return 0
 
     def productData(self):
@@ -37,12 +49,12 @@ class EuropeanOptionProduct(BaseProduct):
     def getExpiry(self):
         return self.expiry
 
-    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
+    def getPayoff(self, simulationWorkspaceItem : SimulationWorkspace):
         strike = self.data['strike']
         expiry = self.data['expiry']
         index = self.data['index']
 
-        indexValues = evolutionGenerator.getSampleValues(expiry, index)
+        indexValues = simulationWorkspaceItem.getSamples(expiry,index)
 
         return [torch.max(indexValues - strike, torch.tensor(0.))]
 
@@ -62,13 +74,13 @@ class AsianOptionProduct(BaseProduct):
         for it in self.observationDates:
             self.dates_underylings[it] = self.index
 
-    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorMonteCarloBase):
+    def getPayoff(self, simulationWorkspaceItem : SimulationWorkspace):
         strike = self.data['strike']
         index = self.data['index']
 
         avg = torch.tensor(0.)
         for it in self.observationDates :
-            avg = avg + evolutionGenerator.getSampleValues(it, index)
+            avg = avg + simulationWorkspaceItem.getSamples(it,index)
 
         return [avg / torch.tensor(self.numberOfObservationDates), torch.max(avg / torch.tensor(self.numberOfObservationDates) - strike, torch.tensor(0.))]
 

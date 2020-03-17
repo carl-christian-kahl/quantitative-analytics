@@ -30,6 +30,9 @@ class BaseModel():
         times = [(it - self.modelDate).days / 365. for it in dates]
         return times
 
+    def getBaseDate(self):
+        return self.modelDate
+
 class LognormalModel(BaseModel):
     def __init__(self, data, modelDate : datetime.datetime):
         self.data = data
