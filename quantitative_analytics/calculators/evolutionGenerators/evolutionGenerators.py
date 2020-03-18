@@ -4,12 +4,14 @@ import numpy as np
 
 torch.manual_seed(2)
 
-class EvolutionGeneratorBase:
+class EvolutionGeneratorBase(torch.nn.Module):
     def __init__(self, data):
+        super(EvolutionGeneratorBase, self).__init__()
         self.data = data
 
 class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
-    def __init__(self, data, indexObservationMaps):
+    def __init__(self, data, indexObservations):
+        super(EvolutionGeneratorMonteCarloBase, self).__init__(indexObservations)
         self.data = data
         self.numberOfSimulations = data['NumberOfSimulations']
 
@@ -18,6 +20,7 @@ class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
 
 class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
     def __init__(self, data, indexObservations, futureDates, variances):
+        super(EvolutionGeneratorLognormal, self).__init__(data, indexObservations)
         self.data = data
         self.numberOfSimulations = data['NumberOfSimulations']
         self.variances = variances

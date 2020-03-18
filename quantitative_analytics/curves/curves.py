@@ -1,6 +1,5 @@
 from quantitative_analytics.interpolators import interpolate
 
-
 class CurveBase():
     def __init__(self):
         self.data = []
@@ -16,3 +15,8 @@ class BlackVolatilitySurface(VolatilitySurface):
 
     def getVolatility(self, time):
         return self.volatilityInterpolator.getValue(time)
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
+

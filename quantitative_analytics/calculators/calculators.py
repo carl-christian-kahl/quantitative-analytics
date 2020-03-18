@@ -7,6 +7,7 @@ from quantitative_analytics.models import models
 from quantitative_analytics.marketdata import marketdata, marketdatarepository
 from quantitative_analytics.analytics import blackanalytics
 
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class BaseCalculator:
     def __init__(self, data, model, product : products.BaseProduct):
@@ -59,6 +60,7 @@ class MonteCarloSimulator(BaseCalculator):
 
     def npv(self):
         # Split this off as this is the time consuming part
+        self.evolutionGenerator.to(device=device)
         stateTensor = self.evolutionGenerator.createStateTensor()
         values = self.product.getPayoff(self.evolutionGenerator, stateTensor)
 
