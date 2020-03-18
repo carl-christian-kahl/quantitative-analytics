@@ -66,14 +66,32 @@ simulationData = {}
 simulationData['NumberOfSimulations'] = 100000
 
 def test_asian_option_monte_carlo():
+    # Run the Monte-Carlo
     mc = calculators.MonteCarloSimulator(simulationData, model, asianOption)
-
     npvmc = mc.npv()
+
+    # Compute first order derivatives
+    x = [forward]
+
+    dxs = []
     for it in npvmc:
-        it.backward(retain_graph=True)
+        dx, = torch.autograd.grad(it, x, create_graph=True, retain_graph=True)
+        dxs.append(dx)
 
-    expected_result = torch.tensor(100.0135192871093750)
-    expected_delta = torch.tensor(1.0197510719299316)
+    ddxs = []
+    for it in dxs:
+        ddx, = torch.autograd.grad(it, x, create_graph=True)
+        ddxs.append(ddx)
 
-    assert abs(npvmc[0] - expected_result) < EPSILON
-    assert abs(forward.grad[0] - expected_delta) < EPSILON
+    expected_results = [torch.tensor(100.0135192871093750),torch.tensor(4.2101149559020996)]
+    expected_deltas = [torch.tensor(0.6668019294738770),torch.tensor(0.3529491424560547)]
+    expected_gammas = [torch.tensor(0.0), torch.tensor(0.0141420941799879)]
+
+    for i,it in enumerate(npvmc):
+        assert abs(it - expected_results[i]) < EPSILON
+
+    for i, it in enumerate(dxs):
+        assert abs(it - expected_deltas[i]) < EPSILON
+
+    for i, it in enumerate(ddxs):
+        assert abs(it - expected_gammas[i]) < EPSILON

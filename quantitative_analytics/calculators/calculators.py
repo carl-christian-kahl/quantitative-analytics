@@ -117,20 +117,27 @@ if __name__ == '__main__':
 
     simulationData = {}
     simulationData['NumberOfSimulations'] = 100000
-    mc = MonteCarloSimulator(simulationData, model, europeanOption)
-    #mc = MonteCarloSimulator(simulationData, model, asianOption)
+    #mc = MonteCarloSimulator(simulationData, model, europeanOption)
+    mc = MonteCarloSimulator(simulationData, model, asianOption)
 
     npvmc = mc.npv()
 
     print(npvmc)
 
-    dx, = torch.autograd.grad(npvmc[0], forward, create_graph=True, retain_graph=True)
+    dxs = []
 
-    print(dx)
+    for it in npvmc:
+        dx, = torch.autograd.grad(it, forward, create_graph=True, retain_graph=True)
+        dxs.append(dx)
 
-    ddx, = torch.autograd.grad(dx, forward, create_graph=True)
+    print(dxs)
 
-    print(ddx)
+    ddxs = []
+    for it in dxs:
+        ddx, = torch.autograd.grad(it, forward, create_graph=True)
+        ddxs.append(ddx)
+
+    print(ddxs)
 
     #npvmc.backward()
     #torch.autograd.grad(npvmc)
