@@ -43,7 +43,7 @@ class EuropeanOptionProduct(BaseProduct):
 
         indexValues = evolutionGenerator.getValue(expiry,index,stateTensor)
 
-        return [functionapproximation.max_if(indexValues-strike,torch.tensor(0.0))]
+        return [indexValues,functionapproximation.max_if(indexValues-strike,torch.tensor(0.0))]
 
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)

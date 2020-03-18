@@ -27,7 +27,10 @@ marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)
 
 volatilityDates = [datetime.date(year=2021, month=6, day=30),
                     datetime.date(year=2021, month=12, day=30)]
-volatilityValues = torch.tensor([0.2,0.2], requires_grad=True)
+volatilityPoint1 = torch.tensor([0.2], requires_grad=True)
+volatilityPoint2 = torch.tensor([0.2], requires_grad=True)
+
+volatilityValues = [volatilityPoint1, volatilityPoint2]
 volatilityMarketData = marketdata.BlackVolatilityMarketData(equity, volatilityDates, volatilityValues)
 marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData)
 
@@ -67,6 +70,7 @@ simulationData['NumberOfSimulations'] = 100000
 
 def test_asian_option_monte_carlo():
     # Run the Monte-Carlo
+    simulationData['LegValues'] = True
     mc = calculators.MonteCarloSimulator(simulationData, model, asianOption)
     npvmc = mc.npv()
 
@@ -95,3 +99,30 @@ def test_asian_option_monte_carlo():
 
     for i, it in enumerate(ddxs):
         assert abs(it - expected_gammas[i]) < EPSILON
+
+
+def test_european_option_monte_carlo():
+    # Run the Monte-Carlo
+    simulationData['LegValues'] = False
+    mc = calculators.MonteCarloSimulator(simulationData, model, europeanOption)
+    npvmc = mc.npv()[0]
+
+    # Compute first order derivatives
+    x = [forward, volatilityPoint1]
+
+    dxs = []
+    dx = torch.autograd.grad(npvmc, x, create_graph=True, retain_graph=True)[0]
+    dxs.append(dx)
+
+    ddxs = []
+
+    # Compute cross gammas
+    for it in dxs:
+        for jt in it:
+            ddx = torch.autograd.grad(jt, x, create_graph=True)
+            ddxs.append(ddx)
+
+    expected_dx = [torch.tensor(1.5386718511581421),torch.tensor(39.1285095214843750)]
+
+    for i, it in enumerate(dxs):
+        assert abs(it - expected_dx[i]) < EPSILON

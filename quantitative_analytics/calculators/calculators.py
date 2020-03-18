@@ -64,8 +64,12 @@ class MonteCarloSimulator(BaseCalculator):
 
         results = []
         for it in values:
-            results.append(torch.mean(it))
-        return torch.stack(results)
+                results.append(torch.mean(it))
+        if 'LegValues' in self.data and self.data['LegValues']:
+            return torch.stack(results)
+        else:
+            return torch.stack([torch.sum(torch.stack(results))])
+
 
 if __name__ == '__main__':
     observationDate = datetime.date(year=2019, month=6, day=30)
