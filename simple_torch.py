@@ -5,6 +5,10 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
+EPSILON = 0.001
+DELTA = EPSILON/math.sqrt(2)
+BOUNDARY = EPSILON*math.sqrt(2)
+
 
 def Black_Scholes_PyTorch(s, k, dt, v, r):
     n = torch.distributions.Normal(0, 1).cdf
@@ -18,6 +22,15 @@ def f(x):
 
 def he(x,e):
     return 0.5*(1.+2./math.pi*np.arctan(x/e))
+
+def smoothingFunction(x,y):
+    a = np.max(x,y)
+    b = np.max(x,y)
+    return np.where(np.abs(x-y) > BOUNDARY, a, b)
+
+#    return np.where(np.abs(x-y) > BOUNDARY, np.max(x,y), 0.5*(x+y+DELTA+(x-y)**2/DELTA/4.))
+
+
 
 if __name__ == '__main__':
 
@@ -74,7 +87,7 @@ if __name__ == '__main__':
     print(h1)
 
     x = np.linspace(-1,1,100)
-    y = he(x,0.001)*x
+    y = smoothingFunction(x,x)
 
     plt.plot(x,y)
     plt.show()

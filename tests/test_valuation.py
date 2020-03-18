@@ -1,6 +1,6 @@
 import datetime
 import torch
-from quantitative_analytics.indices import indices
+from quantitative_analytics.indices import indices, indexfixingrepository
 from quantitative_analytics.marketdata import marketdata, marketdatarepository
 from quantitative_analytics.products import products
 from quantitative_analytics.models import models
@@ -11,17 +11,24 @@ torch.set_printoptions(precision=16)
 EPSILON = 0.00000001
 
 
-observationDate = datetime.date(year=2021, month=6, day=30)
+observationDates = [datetime.date(year=2020, month=11, day=30),
+                    datetime.date(year=2021, month=6, day=30),
+                    datetime.date(year=2021, month=12, day=30)]
 expiry = datetime.date(year=2021, month=12, day=30)
 equity = indices.EquityIndex([], "SPX")
+
+fixingDate = datetime.date(year=2020, month=11, day=30)
+spot_fixing = torch.tensor(100.0, requires_grad=True)
+indexfixingrepository.indexFixingRepositorySingleton.storeFixing(equity, fixingDate, spot_fixing)
 
 forward = torch.tensor([100.0], requires_grad=True)
 md = marketdata.MarketDataEquitySpotBase(equity, forward)
 marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)
 
-dates = [observationDate, expiry]
+volatilityDates = [datetime.date(year=2021, month=6, day=30),
+                    datetime.date(year=2021, month=12, day=30)]
 volatilityValues = torch.tensor([0.2,0.2], requires_grad=True)
-volatilityMarketData = marketdata.BlackVolatilityMarketData(equity, dates, volatilityValues)
+volatilityMarketData = marketdata.BlackVolatilityMarketData(equity, volatilityDates, volatilityValues)
 marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData)
 
 option_data = {}
@@ -32,7 +39,7 @@ option_data['index'] = equity
 # Create a European Option
 europeanOption = products.EuropeanOptionProduct(option_data)
 
-option_data['observationDates'] = [observationDate, expiry]
+option_data['observationDates'] = observationDates
 
 # Create an Asian Option
 asianOption = products.AsianOptionProduct(option_data)
@@ -65,9 +72,8 @@ def test_asian_option_monte_carlo():
     for it in npvmc:
         it.backward(retain_graph=True)
 
-    expected_result = torch.tensor(100.0203018188476562)
-    expected_delta = torch.tensor(1.5296245813369751)
-    expected_vega = torch.tensor(0)
+    expected_result = torch.tensor(100.0135192871093750)
+    expected_delta = torch.tensor(1.0197510719299316)
 
     assert abs(npvmc[0] - expected_result) < EPSILON
     assert abs(forward.grad[0] - expected_delta) < EPSILON
