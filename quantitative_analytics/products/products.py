@@ -25,7 +25,7 @@ class EuropeanOptionProduct(BaseProduct):
         self.expiry = self.data['expiry']
         self.index = self.data['index']
         self.dates_underylings = {}
-        self.dates_underylings[self.expiry] = self.index
+        self.dates_underylings[self.expiry] = [self.index]
 
     def getStrike(self):
         return self.strike
@@ -59,7 +59,7 @@ class AsianOptionProduct(BaseProduct):
         self.index = self.data['index']
         self.dates_underylings = {}
         for it in self.observationDates:
-            self.dates_underylings[it] = self.index
+            self.dates_underylings[it] = [self.index]
 
     def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor):
         strike = self.data['strike']
@@ -70,6 +70,34 @@ class AsianOptionProduct(BaseProduct):
             avg = avg + evolutionGenerator.getValue(it,index,stateTensor)
 
         return [avg / torch.tensor(self.numberOfObservationDates), functionapproximation.max_if(avg / torch.tensor(self.numberOfObservationDates) - strike, torch.tensor(0.))]
+
+class AsianBasketOptionProduct(BaseProduct):
+
+    def __init__(self, data):
+        self.data = data
+        self.strike = self.data['strike']
+        self.observationDates = self.data['observationDates']
+        self.numberOfObservationDates = len(self.observationDates)
+
+        self.indices = self.data['indices']
+        self.numberOfIndices = len(self.indices)
+        self.dates_underylings = {}
+        for it in self.observationDates:
+            self.dates_underylings[it] = []
+            for jt in self.indices:
+                self.dates_underylings[it].append(jt)
+
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor):
+        strike = self.data['strike']
+
+        avg = torch.tensor(0.)
+        for it in self.observationDates :
+            for jt in self.indices:
+                avg = avg + evolutionGenerator.getValue(it,jt,stateTensor)
+
+        asianBasket = avg / torch.tensor(self.numberOfObservationDates) / torch.tensor(self.numberOfIndices)
+
+        return [functionapproximation.max_if(asianBasket - strike, torch.tensor(0.))]
 
 if __name__ == '__main__':
     expiry = datetime.date(year=2021, month=12, day=30)

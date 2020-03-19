@@ -77,18 +77,30 @@ if __name__ == '__main__':
     observationDate = datetime.date(year=2019, month=6, day=30)
     expiry = datetime.date(year=2021, month=12, day=30)
     equity = indices.EquityIndex([], "SPX")
+    equity2 = indices.EquityIndex([], "AAP")
 
     spot_fixing = torch.tensor(100.0, requires_grad=True)
     indexfixingrepository.indexFixingRepositorySingleton.storeFixing(equity,observationDate,spot_fixing)
+
+    spot_fixing2 = torch.tensor(100.0, requires_grad=True)
+    indexfixingrepository.indexFixingRepositorySingleton.storeFixing(equity2,observationDate,spot_fixing2)
 
     forward = torch.tensor(100.0, requires_grad=True)
     md = marketdata.MarketDataEquitySpotBase(equity, forward)
     marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)
 
+    forward2 = torch.tensor(100.0, requires_grad=True)
+    md2 = marketdata.MarketDataEquitySpotBase(equity2, forward2)
+    marketdatarepository.marketDataRepositorySingleton.storeMarketData(md2)
+
     dates = [observationDate, expiry]
     volatilityValues = torch.tensor([0.2,0.2], requires_grad=True)
     volatilityMarketData = marketdata.BlackVolatilityMarketData(equity, dates, volatilityValues)
     marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData)
+
+    volatilityValues2 = torch.tensor([0.2,0.2], requires_grad=True)
+    volatilityMarketData2 = marketdata.BlackVolatilityMarketData(equity2, dates, volatilityValues2)
+    marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData2)
 
     dates_underlyings = {}
     dates_underlyings[expiry] = equity
@@ -105,6 +117,8 @@ if __name__ == '__main__':
     # Create an Asian Option
     asianOption = products.AsianOptionProduct(data)
 
+    data['indices'] = [equity, equity2]
+    asianBasketOption = products.AsianBasketOptionProduct(data)
 
     modelData = {}
     modelData['forward'] = forward
@@ -115,7 +129,7 @@ if __name__ == '__main__':
 
     data_c = []
     eoc = EuropeanOptionCalculator(data, model, europeanOption)
-    #npv = eoc.npv()
+    npv = eoc.npv()
     #npv.backward()
 
     #print(npv)
@@ -125,6 +139,7 @@ if __name__ == '__main__':
     simulationData['NumberOfSimulations'] = 100000
     #mc = MonteCarloSimulator(simulationData, model, europeanOption)
     mc = MonteCarloSimulator(simulationData, model, asianOption)
+    #mc = MonteCarloSimulator(simulationData, model, asianBasketOption)
 
     npvmc = mc.npv()
 

@@ -69,47 +69,71 @@ class LognormalModel(BaseModel):
         futureDates = []
 
         for it in dates_underlyings.keys():
-            underlyings.append(dates_underlyings[it])
+            for jt in dates_underlyings[it]:
+                underlyings.append(jt)
             if it > self.modelDate:
                 futureDates.append(it)
             else:
                 historicalDates.append(it)
 
-
         underlyings = list(set(underlyings))
 
-        # Get spot out of the repository
-        spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
-            marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
-        fwd = spot_md.getValue()
+        fwd = {}
+        vol_curve = {}
 
-        volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
-            marketdata.BlackVolatilityMarketData.getClassTag(), underlyings[0])
-        vol_curve = self.createCurveFromMarketData(volatilityMarketData)
+        for it in underlyings:
 
-        forwardVariance = []
+            # Get spot out of the repository
+            spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
+                marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
+            fwd[it] = spot_md.getValue()
+
+            volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
+                marketdata.BlackVolatilityMarketData.getClassTag(), underlyings[0])
+            vol_curve[it] = self.createCurveFromMarketData(volatilityMarketData)
+
+
+        forwardCovarianceVector = []
         times = self.datesToTimes(futureDates)
-        lastTime = 0
-        lastVar = 0
-        for it in times:
-            vol = vol_curve.getVolatility(it)
-            var = it * vol * vol
-            forwardVariance.append( var - lastVar )
-            lastVar = var
+
+        n = len(underlyings)
+
+        # Make this market data
+        correlationMatrix = np.identity(n)
+
+
+        lastCovariance = torch.zeros(size=(n,n))
+
+
+        for tt in times:
+            covariance = torch.zeros(size=(n,n))
+
+            for i,it in enumerate(underlyings):
+                vol_i = vol_curve[it].getVolatility(tt)
+                for j,jt in enumerate(underlyings):
+                    vol_j = vol_curve[jt].getVolatility(tt)
+
+                    covariance[i][j] = vol_i*vol_j*correlationMatrix[i][j]
+            forwardCovarianceVector.append( covariance - lastCovariance )
+            lastCovariance = covariance
 
         indexObservations = {}
-        indexObservations[underlyings[0]] = {}
+        for it in underlyings:
+            indexObservations[it] = {}
 
         # Here we can very easily differentiate future and past
         for it in historicalDates:
-            # Get spot out of the repository
-            value = indexfixingrepository.indexFixingRepositorySingleton.getFixing(underlyings[0],it)
-            indexObservations[underlyings[0]][it] = indexObservation.IndexObservationConstant(value)
+            for jt in underlyings:
+                # Get spot out of the repository
+                value = indexfixingrepository.indexFixingRepositorySingleton.getFixing(jt,it)
+                indexObservations[jt][it] = indexObservation.IndexObservationConstant(value)
 
         for it in futureDates:
-            indexObservations[underlyings[0]][it] = indexObservation.IndexObservationScaledExponential(fwd)
+            for j,jt in enumerate(underlyings):
+                indexObservations[jt][it] = indexObservation.IndexObservationScaledExponential(fwd[jt],j)
 
-        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations, futureDates, forwardVariance)
+        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations,
+                                                               futureDates, forwardCovarianceVector)
 
 
 if __name__ == '__main__':

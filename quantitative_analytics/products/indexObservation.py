@@ -24,8 +24,9 @@ class IndexObservationConstant(IndexObservationBase):
 
 
 class IndexObservationScaledExponential(IndexObservationBase):
-    def __init__(self, a):
+    def __init__(self, a, i):
         self.a = a
+        self.i = i
 
     def getValue(self, date, stateVector):
-        return self.a*torch.exp(stateVector[date])
+        return self.a*torch.exp(stateVector[date][self.i])

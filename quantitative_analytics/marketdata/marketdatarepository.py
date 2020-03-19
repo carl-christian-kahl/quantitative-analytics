@@ -15,7 +15,7 @@ class MarketDataRepository():
             self.data[marketDataItem.getTag()] = {}
             self.data[marketDataItem.getTag()][marketDataItem.getIndex()] = marketDataItem
         else:
-            self.data[marketDataItem.getTag()][marketDataItem.getId()] = marketDataItem
+            self.data[marketDataItem.getTag()][marketDataItem.getIndex()] = marketDataItem
 
 marketDataRepositorySingleton = MarketDataRepository()
 
