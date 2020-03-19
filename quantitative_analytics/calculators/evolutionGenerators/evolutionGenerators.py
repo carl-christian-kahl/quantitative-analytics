@@ -45,7 +45,7 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
 
         for i,it in enumerate(self.dates):
             # Need to implement the pseudosquareroot of the matrix
-            dW = torch.mm(torch.sqrt(self.forwardCovarianceVector[i]),z[i,:,:]) - self.forwardVarianceVector[i]/2.
+            dW = torch.mm(self.forwardCovarianceVector[i],z[i,:,:]) - self.forwardVarianceVector[i]/2.
             logsamples = logsamples + dW
 
             sampleValues[it] = logsamples

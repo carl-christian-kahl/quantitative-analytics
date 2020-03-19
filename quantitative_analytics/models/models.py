@@ -8,6 +8,7 @@ from quantitative_analytics.curves import curves
 from quantitative_analytics.interpolators import interpolate
 from quantitative_analytics.products import indexObservation
 from quantitative_analytics.indices import indexfixingrepository
+from quantitative_analytics.analytics import matrixanalytics
 
 
 class BaseModel():
@@ -93,7 +94,7 @@ class LognormalModel(BaseModel):
             vol_curve[it] = self.createCurveFromMarketData(volatilityMarketData)
 
 
-        forwardCovarianceVector = []
+        forwardSqrtCovarianceVector = []
         forwardVarianceVector = []
         times = self.datesToTimes(futureDates)
 
@@ -119,7 +120,8 @@ class LognormalModel(BaseModel):
                     covariance[i][j] = vol_i*vol_j*correlationMatrix[i][j] * tt
                 variance[i] = covariance[i][i]
             forwardVarianceVector.append( variance - lastVariance )
-            forwardCovarianceVector.append( covariance - lastCovariance )
+            forwardSqrtCovarianceVector.append(
+                matrixanalytics.square_root_symmetric_matrix(covariance - lastCovariance) )
             lastCovariance = covariance
             lastVariance = variance
 
@@ -140,7 +142,7 @@ class LognormalModel(BaseModel):
 
         return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations,
                                                                futureDates, forwardVarianceVector,
-                                                               forwardCovarianceVector)
+                                                               forwardSqrtCovarianceVector)
 
 
 if __name__ == '__main__':
