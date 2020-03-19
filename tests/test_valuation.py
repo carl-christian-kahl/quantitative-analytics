@@ -87,9 +87,9 @@ def test_asian_option_monte_carlo():
         ddx, = torch.autograd.grad(it, x, create_graph=True)
         ddxs.append(ddx)
 
-    expected_results = [torch.tensor(100.0466690063476562),torch.tensor(5.3452601432800293)]
-    expected_deltas = [torch.tensor(0.6671331524848938),torch.tensor(0.3597118854522705)]
-    expected_gammas = [torch.tensor(0.0), torch.tensor(0.0188559014350176)]
+    expected_results = [torch.tensor(99.9837799072265625),torch.tensor(4.1870269775390625)]
+    expected_deltas = [torch.tensor(0.6665046215057373),torch.tensor(0.3531083762645721)]
+    expected_gammas = [torch.tensor(0.0), torch.tensor(0.0172849930822849)]
 
     for i,it in enumerate(npvmc):
         assert abs(it - expected_results[i]) < EPSILON

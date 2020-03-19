@@ -94,6 +94,7 @@ class LognormalModel(BaseModel):
 
 
         forwardCovarianceVector = []
+        forwardVarianceVector = []
         times = self.datesToTimes(futureDates)
 
         n = len(underlyings)
@@ -103,19 +104,24 @@ class LognormalModel(BaseModel):
 
 
         lastCovariance = torch.zeros(size=(n,n))
+        lastVariance = torch.zeros(n)
 
 
         for tt in times:
             covariance = torch.zeros(size=(n,n))
+            variance = torch.zeros(n)
 
             for i,it in enumerate(underlyings):
                 vol_i = vol_curve[it].getVolatility(tt)
                 for j,jt in enumerate(underlyings):
                     vol_j = vol_curve[jt].getVolatility(tt)
 
-                    covariance[i][j] = vol_i*vol_j*correlationMatrix[i][j]
+                    covariance[i][j] = vol_i*vol_j*correlationMatrix[i][j] * tt
+                variance[i] = covariance[i][i]
+            forwardVarianceVector.append( variance - lastVariance )
             forwardCovarianceVector.append( covariance - lastCovariance )
             lastCovariance = covariance
+            lastVariance = variance
 
         indexObservations = {}
         for it in underlyings:
@@ -133,7 +139,8 @@ class LognormalModel(BaseModel):
                 indexObservations[jt][it] = indexObservation.IndexObservationScaledExponential(fwd[jt],j)
 
         return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations,
-                                                               futureDates, forwardCovarianceVector)
+                                                               futureDates, forwardVarianceVector,
+                                                               forwardCovarianceVector)
 
 
 if __name__ == '__main__':

@@ -19,10 +19,12 @@ class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
         return 0
 
 class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
-    def __init__(self, data, indexObservations, futureDates, forwardCovarianceVector):
+    def __init__(self, data, indexObservations, futureDates,
+                 forwardVarianceVector, forwardCovarianceVector):
         super(EvolutionGeneratorLognormal, self).__init__(data, indexObservations)
         self.data = data
         self.numberOfSimulations = data['NumberOfSimulations']
+        self.forwardVarianceVector = forwardVarianceVector
         self.forwardCovarianceVector = forwardCovarianceVector
         self.dates = futureDates
         self.indexObservations = indexObservations
@@ -35,7 +37,7 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
         print(m)
 
         # Draw random numbers
-        z = torch.randn(size=(m,self.numberOfSimulations,n))
+        z = torch.randn(size=(n,m,self.numberOfSimulations))
 
         logsamples = torch.zeros(size=(m,self.numberOfSimulations))
 
@@ -43,9 +45,7 @@ class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
 
         for i,it in enumerate(self.dates):
             # Need to implement the pseudosquareroot of the matrix
-            dW = torch.mm(torch.sqrt(self.forwardCovarianceVector[i]),z[:,:,i])
-            for j in range(m):
-                dW[j] = dW[j] - self.forwardCovarianceVector[i][j][j]/2.
+            dW = torch.mm(torch.sqrt(self.forwardCovarianceVector[i]),z[i,:,:]) - self.forwardVarianceVector[i]/2.
             logsamples = logsamples + dW
 
             sampleValues[it] = logsamples
