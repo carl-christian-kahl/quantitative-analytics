@@ -86,11 +86,11 @@ class LognormalModel(BaseModel):
 
             # Get spot out of the repository
             spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
-                marketdata.MarketDataEquitySpotBase.getClassTag(), underlyings[0])
+                marketdata.MarketDataEquitySpotBase.getClassTag(), it)
             fwd[it] = spot_md.getValue()
 
             volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
-                marketdata.BlackVolatilityMarketData.getClassTag(), underlyings[0])
+                marketdata.BlackVolatilityMarketData.getClassTag(), it)
             vol_curve[it] = self.createCurveFromMarketData(volatilityMarketData)
 
 

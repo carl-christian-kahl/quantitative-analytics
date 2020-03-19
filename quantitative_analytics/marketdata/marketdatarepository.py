@@ -10,6 +10,9 @@ class MarketDataRepository():
     def getMarketData(self, marketDataType, marketDataId):
         return self.data[marketDataType][marketDataId]
 
+    def clear(self):
+        self.data = {}
+
     def storeMarketData(self, marketDataItem : marketdata.MarketDataBase):
         if not marketDataItem.getTag() in self.data:
             self.data[marketDataItem.getTag()] = {}

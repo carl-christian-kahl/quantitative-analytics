@@ -16,14 +16,27 @@ observationDates = [datetime.date(year=2020, month=11, day=30),
                     datetime.date(year=2021, month=12, day=30)]
 expiry = datetime.date(year=2021, month=12, day=30)
 equity = indices.EquityIndex([], "SPX")
+equity2 = indices.EquityIndex([], "AAP")
+
+indexfixingrepository.indexFixingRepositorySingleton.clear()
 
 fixingDate = datetime.date(year=2020, month=11, day=30)
 spot_fixing = torch.tensor(100.0, requires_grad=True)
 indexfixingrepository.indexFixingRepositorySingleton.storeFixing(equity, fixingDate, spot_fixing)
 
+spot_fixing2 = torch.tensor(100.0, requires_grad=True)
+indexfixingrepository.indexFixingRepositorySingleton.storeFixing(equity2, fixingDate, spot_fixing2)
+
+marketdatarepository.marketDataRepositorySingleton.clear()
+
 forward = torch.tensor([100.0], requires_grad=True)
 md = marketdata.MarketDataEquitySpotBase(equity, forward)
 marketdatarepository.marketDataRepositorySingleton.storeMarketData(md)
+
+forward2 = torch.tensor([100.0], requires_grad=True)
+md2 = marketdata.MarketDataEquitySpotBase(equity2, forward2)
+marketdatarepository.marketDataRepositorySingleton.storeMarketData(md2)
+
 
 volatilityDates = [datetime.date(year=2021, month=6, day=30),
                     datetime.date(year=2021, month=12, day=30)]
@@ -33,6 +46,13 @@ volatilityPoint2 = torch.tensor([0.2], requires_grad=True)
 volatilityValues = [volatilityPoint1, volatilityPoint2]
 volatilityMarketData = marketdata.BlackVolatilityMarketData(equity, volatilityDates, volatilityValues)
 marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData)
+
+volatilityPoint3 = torch.tensor([0.3], requires_grad=True)
+volatilityPoint4 = torch.tensor([0.3], requires_grad=True)
+
+volatilityValues2 = [volatilityPoint3, volatilityPoint4]
+volatilityMarketData2 = marketdata.BlackVolatilityMarketData(equity2, volatilityDates, volatilityValues2)
+marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData2)
 
 option_data = {}
 option_data['strike'] = torch.tensor(100.0, requires_grad=True)
@@ -46,6 +66,9 @@ option_data['observationDates'] = observationDates
 
 # Create an Asian Option
 asianOption = products.AsianOptionProduct(option_data)
+
+option_data['indices'] = [equity, equity2]
+asianBasketOption = products.AsianBasketOptionProduct(option_data)
 
 modelData = {}
 modelData['forward'] = forward
@@ -123,6 +146,26 @@ def test_european_option_monte_carlo():
             ddxs.append(ddx)
 
     expected_dx = [torch.tensor(1.5386718511581421),torch.tensor(39.1285095214843750)]
+
+    for i, it in enumerate(dxs):
+        assert abs(it - expected_dx[i]) < EPSILON
+
+
+def test_asian_basket_option_monte_carlo():
+    # Run the Monte-Carlo
+    simulationData['LegValues'] = True
+    mc = calculators.MonteCarloSimulator(simulationData, model, asianBasketOption)
+    npvmc = mc.npv()
+
+    # Compute first order derivatives
+    x = [forward,forward2]
+
+    dxs = []
+    for it in npvmc:
+        dx = torch.autograd.grad(it, x, create_graph=True, retain_graph=True, allow_unused=True)[0]
+        dxs.append(dx)
+
+    expected_dx = [torch.tensor(0.1672766059637070), torch.tensor(0.1809422969818115)]
 
     for i, it in enumerate(dxs):
         assert abs(it - expected_dx[i]) < EPSILON

@@ -60,7 +60,7 @@ class MonteCarloSimulator(BaseCalculator):
 
     def npv(self):
         # Split this off as this is the time consuming part
-        self.evolutionGenerator.to(device=device)
+        # self.evolutionGenerator.to(device=device)
         stateTensor = self.evolutionGenerator.createStateTensor()
         values = self.product.getPayoff(self.evolutionGenerator, stateTensor)
 
@@ -138,8 +138,8 @@ if __name__ == '__main__':
     simulationData = {}
     simulationData['NumberOfSimulations'] = 100000
     #mc = MonteCarloSimulator(simulationData, model, europeanOption)
-    mc = MonteCarloSimulator(simulationData, model, asianOption)
-    #mc = MonteCarloSimulator(simulationData, model, asianBasketOption)
+    #mc = MonteCarloSimulator(simulationData, model, asianOption)
+    mc = MonteCarloSimulator(simulationData, model, asianBasketOption)
 
     npvmc = mc.npv()
 
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     dxs = []
 
     for it in npvmc:
-        dx, = torch.autograd.grad(it, forward, create_graph=True, retain_graph=True)
+        dx, = torch.autograd.grad(it, forward, create_graph=True, retain_graph=True, allow_unused=True)
         dxs.append(dx)
 
     print(dxs)

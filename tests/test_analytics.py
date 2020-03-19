@@ -1,10 +1,10 @@
-from quantitative_analytics.analytics import blackanalytics
+from quantitative_analytics.analytics import blackanalytics, matrixanalytics
 
 import torch
 
 torch.set_printoptions(precision=16)
 
-EPSILON = 0.00000001
+EPSILON = 0.0000001
 
 def test_black():
 
@@ -23,3 +23,16 @@ def test_black():
     assert abs(npv_pytorch[0] - expected_result) < EPSILON
     assert abs(spot.grad[0] - expected_delta) < EPSILON
     assert abs(sigma.grad[0] - expected_vega) < EPSILON
+
+def test_matrix_square_root():
+
+    A = [[0.2,0.1],[0.1,0.3]]
+    At = torch.tensor(A)
+    Bt = matrixanalytics.square_root_symmetric_matrix(At)
+    # Compute the matrix square
+    Ct = torch.mm(Bt,Bt.t())
+
+    # Check that the original matrix is recovered
+    Et = At - Ct
+
+    assert torch.norm(Et) < EPSILON

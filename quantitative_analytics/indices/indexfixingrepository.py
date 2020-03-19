@@ -10,6 +10,9 @@ class IndexFixingRepository():
     def getFixing(self, index, date):
         return self.data[index][date]
 
+    def clear(self):
+        self.data = {}
+
     def storeFixing(self, index, date, value):
         if not index in self.data:
             self.data[index] = {}
