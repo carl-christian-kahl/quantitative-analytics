@@ -54,6 +54,15 @@ volatilityValues2 = [volatilityPoint3, volatilityPoint4]
 volatilityMarketData2 = marketdata.BlackVolatilityMarketData(equity2, volatilityDates, volatilityValues2)
 marketdatarepository.marketDataRepositorySingleton.storeMarketData(volatilityMarketData2)
 
+correlation = torch.tensor([0.1], requires_grad=True)
+correlationMarketData = marketdata.CorrelationMarketData(equity2, equity, correlation)
+marketdatarepository.marketDataRepositorySingleton.storeMarketData(correlationMarketData)
+
+correlation2 = torch.tensor([0.1], requires_grad=True)
+correlationMarketData2 = marketdata.CorrelationMarketData(equity, equity2, correlation2)
+marketdatarepository.marketDataRepositorySingleton.storeMarketData(correlationMarketData2)
+
+
 option_data = {}
 option_data['strike'] = torch.tensor(100.0, requires_grad=True)
 option_data['expiry'] = expiry
@@ -165,7 +174,7 @@ def test_asian_basket_option_monte_carlo():
         dx = torch.autograd.grad(it, x, create_graph=True, retain_graph=True, allow_unused=True)[0]
         dxs.append(dx)
 
-    expected_dx = [torch.tensor(0.1672766059637070), torch.tensor(0.1809422969818115)]
+    expected_dx = [torch.tensor(0.1680531501770020), torch.tensor(0.1809422969818115)]
 
     for i, it in enumerate(dxs):
         assert abs(it - expected_dx[i]) < EPSILON

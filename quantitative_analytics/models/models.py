@@ -77,7 +77,7 @@ class LognormalModel(BaseModel):
             else:
                 historicalDates.append(it)
 
-        underlyings = list(set(underlyings))
+        underlyings = sorted(list(set(underlyings)))
 
         fwd = {}
         vol_curve = {}
@@ -100,6 +100,9 @@ class LognormalModel(BaseModel):
 
         n = len(underlyings)
 
+        for it in underlyings:
+            print(it.getIndexString())
+
         # Make this market data
         correlationMatrix = np.identity(n)
 
@@ -116,6 +119,12 @@ class LognormalModel(BaseModel):
                 vol_i = vol_curve[it].getVolatility(tt)
                 for j,jt in enumerate(underlyings):
                     vol_j = vol_curve[jt].getVolatility(tt)
+
+                    if i < j:
+                        correlationIdentifier = marketdata.CorrelationMarketData.createIdentifier(it,jt)
+                        correlationMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
+                            marketdata.CorrelationMarketData.getClassTag(), correlationIdentifier)
+                        correlationMatrix[i][j] = correlationMatrix[j][i] = correlationMarketData.getValue()
 
                     covariance[i][j] = vol_i*vol_j*correlationMatrix[i][j] * tt
                 variance[i] = covariance[i][i]

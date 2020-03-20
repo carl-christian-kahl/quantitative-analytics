@@ -16,9 +16,9 @@ class MarketDataRepository():
     def storeMarketData(self, marketDataItem : marketdata.MarketDataBase):
         if not marketDataItem.getTag() in self.data:
             self.data[marketDataItem.getTag()] = {}
-            self.data[marketDataItem.getTag()][marketDataItem.getIndex()] = marketDataItem
+            self.data[marketDataItem.getTag()][marketDataItem.getIdentifier()] = marketDataItem
         else:
-            self.data[marketDataItem.getTag()][marketDataItem.getIndex()] = marketDataItem
+            self.data[marketDataItem.getTag()][marketDataItem.getIdentifier()] = marketDataItem
 
 marketDataRepositorySingleton = MarketDataRepository()
 

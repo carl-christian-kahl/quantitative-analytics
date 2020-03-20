@@ -16,6 +16,9 @@ class MarketDataBase():
     def getIndex(self):
         return 0
 
+    def getIdentifier(self):
+        return 0
+
 class MarketDataEquitySpotBase():
     def __init__(self, index : indices.EquityIndex, value : torch.tensor):
         self.index = index
@@ -29,6 +32,9 @@ class MarketDataEquitySpotBase():
         return self.getClassTag()
 
     def getIndex(self):
+        return self.index
+
+    def getIdentifier(self):
         return self.index
 
     def getValue(self):
@@ -47,6 +53,9 @@ class VolatilityMarketData(MarketDataBase):
         return self.getClassTag()
 
     def getIndex(self):
+        return self.index
+
+    def getIdentifier(self):
         return self.index
 
     def getValue(self):
@@ -70,6 +79,42 @@ class BlackVolatilityMarketData(VolatilityMarketData):
 
     def getValues(self):
         return self.values
+
+    def getDates(self):
+        return self.dates
+
+    def getIndex(self):
+        return self.index
+
+    def getIdentifier(self):
+        return self.index
+
+
+class CorrelationMarketData(MarketDataBase):
+    def __init__(self, index_first : indices.BaseIndex, index_second : indices.BaseIndex, value):
+        self.index_first = index_first
+        self.index_second = index_second
+        self.value = value
+
+    @staticmethod
+    def getClassTag():
+        return "CorrelationMarketData"
+
+    def getTag(self):
+        return self.getClassTag()
+
+    def getIndex(self):
+        return self.index
+
+    @staticmethod
+    def createIdentifier(index_first : indices.BaseIndex, index_second : indices.BaseIndex):
+        return index_first.getIndexString() + "_" + index_second.getIndexString()
+
+    def getIdentifier(self):
+        return self.createIdentifier(self.index_first, self.index_second)
+
+    def getValue(self):
+        return self.value
 
     def getDates(self):
         return self.dates
