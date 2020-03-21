@@ -39,7 +39,6 @@ python-dateutil==2.8.1
 pytils==0.3
 pytz==2019.3
 PyYAML==5.3
--e git+https://github.com/carl-christian-kahl/quantitative-analytics@1c9b72e750fd05de78f95c3dbd683f639e6e9c78#egg=quantitative_analytics
 requests==2.23.0
 requests-oauthlib==1.3.0
 rsa==4.0
