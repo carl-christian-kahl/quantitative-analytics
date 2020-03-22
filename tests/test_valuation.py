@@ -101,6 +101,7 @@ simulationData = {}
 simulationData['NumberOfSimulations'] = 100000
 
 def test_asian_option_monte_carlo():
+    
     # Run the Monte-Carlo
     simulationData['LegValues'] = True
     mc = calculators.MonteCarloSimulator(simulationData, model, asianOption)
