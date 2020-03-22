@@ -138,8 +138,8 @@ if __name__ == '__main__':
     simulationData = {}
     simulationData['NumberOfSimulations'] = 100000
     #mc = MonteCarloSimulator(simulationData, model, europeanOption)
-    #mc = MonteCarloSimulator(simulationData, model, asianOption)
-    mc = MonteCarloSimulator(simulationData, model, asianBasketOption)
+    mc = MonteCarloSimulator(simulationData, model, asianOption)
+    #mc = MonteCarloSimulator(simulationData, model, asianBasketOption)
 
     npvmc = mc.npv()
 

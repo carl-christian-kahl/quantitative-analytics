@@ -120,7 +120,7 @@ def test_asian_option_monte_carlo():
         ddx, = torch.autograd.grad(it, x, create_graph=True)
         ddxs.append(ddx)
 
-    expected_results = [torch.tensor(99.9837799072265625),torch.tensor(4.1870269775390625)]
+    expected_results = [torch.tensor(99.9838027954101562),torch.tensor(4.1870269775390625)]
     expected_deltas = [torch.tensor(0.6665046215057373),torch.tensor(0.3531083762645721)]
     expected_gammas = [torch.tensor(0.0), torch.tensor(0.0172849930822849)]
 
