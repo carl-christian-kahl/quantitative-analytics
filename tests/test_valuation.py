@@ -104,7 +104,7 @@ def test_asian_option_monte_carlo():
     
     # Run the Monte-Carlo
     simulationData['LegValues'] = True
-    mc = montecarlocalculator.MonteCarloSimulator(simulationData, model, asianOption)
+    mc = montecarlocalculator.MonteCarloCalculator(simulationData, model, asianOption)
     npvmc = mc.npv()
 
     # Compute first order derivatives
@@ -137,7 +137,7 @@ def test_asian_option_monte_carlo():
 def test_european_option_monte_carlo():
     # Run the Monte-Carlo
     simulationData['LegValues'] = False
-    mc = montecarlocalculator.MonteCarloSimulator(simulationData, model, europeanOption)
+    mc = montecarlocalculator.MonteCarloCalculator(simulationData, model, europeanOption)
     npvmc = mc.npv()[0]
 
     # Compute first order derivatives
@@ -164,7 +164,7 @@ def test_european_option_monte_carlo():
 def test_asian_basket_option_monte_carlo():
     # Run the Monte-Carlo
     simulationData['LegValues'] = True
-    mc = montecarlocalculator.MonteCarloSimulator(simulationData, model, asianBasketOption)
+    mc = montecarlocalculator.MonteCarloCalculator(simulationData, model, asianBasketOption)
     npvmc = mc.npv()
 
     # Compute first order derivatives

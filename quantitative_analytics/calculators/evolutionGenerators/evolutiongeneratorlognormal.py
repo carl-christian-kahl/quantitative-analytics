@@ -39,5 +39,15 @@ class EvolutionGeneratorLognormal(evolutionGenerators.EvolutionGeneratorMonteCar
 
         return sampleValues
 
+    def createStateFiniteDifference(self):
+        m = len(self.forwardCovarianceVector[0])
+        finiteDifferenceGrid = torch.zeros(size=(m,self.numberOfSimulations))
+
+        return finiteDifferenceGrid
+
+    def getFiniteDifferenceDates(self):
+        return self.dates
+
+
     def getValue(self, date, index, stateTensor):
         return self.indexObservations[index][date].getValue(date,stateTensor)

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76a904da-ecd5-425f-8944-7c9733f5151d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/europeanoptioncalculator.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/montecarlocalculator.py" afterDir="false" />
+    <list default="true" id="76a904da-ecd5-425f-8944-7c9733f5151d" name="Default Changelist" comment="First fragment of &#10;&#10;Checked in by: CK">
+      <change afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/finitedifferencecalculator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quantitative_analytics/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quantitative_analytics/calculators/montecarlocalculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/montecarlocalculator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_valuation.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_valuation.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,11 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tests/test_valuation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="166" column="29" selection-start-line="166" selection-start-column="29" selection-end-line="166" selection-end-column="29" />
+            <state relative-caret-position="68">
+              <caret line="106" column="50" selection-start-line="106" selection-start-column="50" selection-end-line="106" selection-end-column="50" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -34,8 +31,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/montecarlocalculator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" column="23" lean-forward="true" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
+            <state relative-caret-position="255">
+              <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
@@ -44,34 +41,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/europeanoptioncalculator.py">
+        <entry file="file://$PROJECT_DIR$/quantitative_analytics/models/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
+            <state relative-caret-position="374">
+              <caret line="151" column="70" selection-start-line="151" selection-start-column="43" selection-end-line="151" selection-end-column="70" />
+              <folding>
+                <element signature="e#0#86#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/test_analytics.py">
+        <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/finitedifferencecalculator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+            <state relative-caret-position="697">
+              <caret line="41" column="41" selection-start-line="41" selection-start-column="41" selection-end-line="41" selection-end-column="41" />
               <folding>
-                <element signature="e#0#76#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/quantitative_analytics/models/models.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/nn/modules/module.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#86#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="168">
+              <caret line="575" selection-start-line="575" selection-end-line="575" />
             </state>
           </provider>
         </entry>
@@ -91,20 +88,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/products.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="120" column="105" selection-start-line="120" selection-start-column="105" selection-end-line="120" selection-end-column="105" />
+            <state relative-caret-position="272">
+              <caret line="46" column="36" lean-forward="true" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/productData.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -124,11 +112,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="54" selection-start-line="4" selection-start-column="54" selection-end-line="4" selection-end-column="54" />
+            <state relative-caret-position="418">
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/indexObservation.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="404">
+              <caret line="31" selection-start-line="31" selection-end-line="31" />
             </state>
           </provider>
         </entry>
@@ -170,12 +167,13 @@
         <option value="$PROJECT_DIR$/quantitative_analytics/products/productData.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/products/products.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/calculators/europeanoptioncalculator.py" />
-        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" />
-        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/montecarlocalculator.py" />
-        <option value="$PROJECT_DIR$/tests/test_valuation.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py" />
-        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/montecarlocalculator.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/models/models.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/finitedifferencecalculator.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" />
+        <option value="$PROJECT_DIR$/tests/test_valuation.py" />
       </list>
     </option>
   </component>
@@ -214,8 +212,7 @@
               <item name="quantitative-analytics" type="b2602c69:ProjectViewProjectNode" />
               <item name="quantitative-analytics" type="462c0819:PsiDirectoryNode" />
               <item name="quantitative_analytics" type="462c0819:PsiDirectoryNode" />
-              <item name="calculators" type="462c0819:PsiDirectoryNode" />
-              <item name="evolutionGenerators" type="462c0819:PsiDirectoryNode" />
+              <item name="products" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="quantitative-analytics" type="b2602c69:ProjectViewProjectNode" />
@@ -251,7 +248,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.calculators">
+  <component name="RunManager" selected="Python.finitedifferencecalculator">
     <configuration name="calculators" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="quantitative-analytics" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -273,6 +270,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="finitedifferencecalculator" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="quantitative-analytics" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/quantitative_analytics/calculators" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quantitative_analytics/calculators/finitedifferencecalculator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="interpolate" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="quantitative-analytics" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -286,27 +304,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/quantitative_analytics/interpolators/interpolate.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="simple_torch" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="quantitative-analytics" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/simple_torch.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -359,11 +356,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.finitedifferencecalculator" />
         <item itemvalue="Python.calculators" />
         <item itemvalue="Python.test_valuation" />
         <item itemvalue="Python.test_analytics" />
         <item itemvalue="Python.interpolate" />
-        <item itemvalue="Python.simple_torch" />
       </list>
     </recent_temporary>
   </component>
@@ -455,7 +452,21 @@
       <option name="project" value="LOCAL" />
       <updated>1584987004603</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Factored out classes into seperate files&#10;&#10;Checked in by: CK">
+      <created>1584994531848</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1584994531848</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Updated JupyterLab example&#10;&#10;Checked in by: CK">
+      <created>1584994805011</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1584994805011</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -467,14 +478,14 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49947312" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48630136" weight="0.32936078" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48946258" weight="0.3997833" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48366702" weight="0.32936078" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4873551" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49947312" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.56691253" visible="true" weight="0.32827735" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.43308747" side_tool="true" visible="true" weight="0.32827735" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.5663857" visible="true" weight="0.32827735" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.43361434" side_tool="true" visible="true" weight="0.32827735" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49947312" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -491,7 +502,9 @@
     <MESSAGE value="Changed setup file&#10;&#10;Checked in by: CK" />
     <MESSAGE value="Show how to extend the framework in the JupyterLab example&#10;&#10;Checked in by: CK" />
     <MESSAGE value="Changed the interface by which the Monte-Carlo calculator calls for a product payoff. This will facilitate Monte-Carlo pricing as well as backward evolution as we go event data by event date&#10;&#10;Checked in by: CK" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the interface by which the Monte-Carlo calculator calls for a product payoff. This will facilitate Monte-Carlo pricing as well as backward evolution as we go event data by event date&#10;&#10;Checked in by: CK" />
+    <MESSAGE value="Factored out classes into seperate files&#10;&#10;Checked in by: CK" />
+    <MESSAGE value="Updated JupyterLab example&#10;&#10;Checked in by: CK" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated JupyterLab example&#10;&#10;Checked in by: CK" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -515,6 +528,26 @@
           <url>file://$PROJECT_DIR$/quantitative_analytics/products/products.py</url>
           <line>85</line>
           <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/quantitative_analytics/calculators/finitedifferencecalculator.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/quantitative_analytics/calculators/finitedifferencecalculator.py</url>
+          <line>37</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/quantitative_analytics/products/indexObservation.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -712,27 +745,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/nn/modules/module.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="575" selection-start-line="575" selection-end-line="575" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/autograd/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
           <caret line="156" selection-start-line="156" selection-end-line="156" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/products.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="120" column="105" selection-start-line="120" selection-start-column="105" selection-end-line="120" selection-end-column="105" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -743,20 +759,74 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-end-line="2" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/models/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="151" column="70" selection-start-line="151" selection-start-column="43" selection-end-line="151" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#86#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/nn/modules/module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="575" selection-start-line="575" selection-end-line="575" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/indexObservation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/products.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="46" column="36" lean-forward="true" selection-start-line="46" selection-start-column="36" selection-end-line="46" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/montecarlocalculator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="27" column="23" lean-forward="true" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
+        <state relative-caret-position="255">
+          <caret line="21" column="40" lean-forward="true" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_valuation.py">
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="166" column="29" selection-start-line="166" selection-start-column="29" selection-end-line="166" selection-end-column="29" />
+        <state relative-caret-position="418">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/finitedifferencecalculator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="697">
+          <caret line="41" column="41" selection-start-line="41" selection-start-column="41" selection-end-line="41" selection-end-column="41" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -773,32 +843,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-end-line="2" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutiongeneratorlognormal.py">
+    <entry file="file://$PROJECT_DIR$/tests/test_valuation.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" column="54" selection-start-line="4" selection-start-column="54" selection-end-line="4" selection-end-column="54" />
+          <caret line="106" column="50" selection-start-line="106" selection-start-column="50" selection-end-line="106" selection-end-column="50" />
           <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/quantitative_analytics/models/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#86#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

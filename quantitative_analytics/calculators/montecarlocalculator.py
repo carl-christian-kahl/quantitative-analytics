@@ -3,7 +3,7 @@ import torch
 from quantitative_analytics.models import models
 from quantitative_analytics.calculators import calculators
 
-class MonteCarloSimulator(calculators.BaseCalculator):
+class MonteCarloCalculator(calculators.BaseCalculator):
     def __init__(self, data, model : models.BaseModel, product : products.BaseProduct):
         self.data = data
         self.model = model
