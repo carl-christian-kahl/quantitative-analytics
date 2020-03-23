@@ -1,11 +1,9 @@
 from quantitative_analytics.products import products
 import datetime
 from quantitative_analytics.indices import indices, indexfixingrepository
-import simple_torch
 import torch
 from quantitative_analytics.models import models
 from quantitative_analytics.marketdata import marketdata, marketdatarepository
-from quantitative_analytics.analytics import blackanalytics
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -17,67 +15,6 @@ class BaseCalculator:
 
     def npv(self):
         return 0.0
-
-
-class EuropeanOptionCalculator(BaseCalculator):
-    def __init__(self, data, model : models.LognormalModel, product : products.EuropeanOptionProduct):
-        self.data = data
-        self.model = model
-        self.product = product
-
-
-    def npv(self):
-        strike = self.product.getStrike()
-        index = self.product.getIndex()
-
-        # Get spot out of the repository
-        spot_md = marketdatarepository.marketDataRepositorySingleton.getMarketData(
-            marketdata.MarketDataEquitySpotBase.getClassTag(), index)
-        fwd = spot_md.getValue()
-
-        volatilityMarketData = marketdatarepository.marketDataRepositorySingleton.getMarketData(
-            marketdata.BlackVolatilityMarketData.getClassTag(), index)
-        vol_curve = self.model.createCurveFromMarketData(volatilityMarketData)
-
-        datePoint = self.product.getExpiry()
-        timePoint = torch.tensor(self.model.dateToTime(datePoint))
-
-        spot = fwd
-        volatility = vol_curve.getVolatility(timePoint)
-        return [blackanalytics.black(spot, strike, timePoint, volatility, 0)]
-
-
-class MonteCarloSimulator(BaseCalculator):
-    def __init__(self, data, model : models.BaseModel, product : products.BaseProduct):
-        self.data = data
-        self.model = model
-        self.product = product
-        self.numberOfLegs = product.getNumberOfLegs()
-        self.baseDate = model.getBaseDate()
-        # Ask the model to create an Evolution Generator
-        productData = self.product.productData()
-        self.fixingValues = []
-        self.evolutionGenerator = self.model.createEvolutionGenerator(data, productData)
-        self.dates_underlyings = self.product.getDatesUnderlying()
-
-    def npv(self):
-        # Split this off as this is the time consuming part
-        # self.evolutionGenerator.to(device=device)
-        stateTensor = self.evolutionGenerator.createStateTensor()
-
-        values = [torch.tensor(0.0),torch.tensor(0.0)]
-        for it in self.dates_underlyings.keys():
-            valueThisEventDate = self.product.getPayoff(self.evolutionGenerator, stateTensor, it)
-            for i,it in enumerate(values):
-                values[i] = values[i] + valueThisEventDate[i]
-
-        results = []
-        for it in values:
-                results.append(torch.mean(it))
-        if 'LegValues' in self.data and self.data['LegValues']:
-            return torch.stack(results)
-        else:
-            return torch.stack([torch.sum(torch.stack(results))])
 
 
 if __name__ == '__main__':
@@ -134,18 +71,22 @@ if __name__ == '__main__':
     modelDate = datetime.date(year=2020, month=12, day=30)
     model = models.LognormalModel(modelData, modelDate)
 
+    from quantitative_analytics.calculators import europeanoptioncalculator
+
     data_c = []
-    eoc = EuropeanOptionCalculator(data, model, europeanOption)
+    eoc = europeanoptioncalculator.EuropeanOptionCalculator(data, model, europeanOption)
     npv = eoc.npv()
     #npv.backward()
 
     #print(npv)
     #print(forward.grad)
 
+    from quantitative_analytics.calculators import montecarlocalculator
+
     simulationData = {}
     simulationData['NumberOfSimulations'] = 100000
     #mc = MonteCarloSimulator(simulationData, model, europeanOption)
-    mc = MonteCarloSimulator(simulationData, model, asianOption)
+    mc = montecarlocalculator.MonteCarloSimulator(simulationData, model, asianOption)
     #mc = MonteCarloSimulator(simulationData, model, asianBasketOption)
 
     npvmc = mc.npv()

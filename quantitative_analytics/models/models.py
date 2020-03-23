@@ -1,4 +1,4 @@
-from quantitative_analytics.calculators.evolutionGenerators import evolutionGenerators
+from quantitative_analytics.calculators.evolutionGenerators import evolutiongeneratorlognormal
 from quantitative_analytics.products import productData
 import numpy as np
 import datetime
@@ -149,7 +149,7 @@ class LognormalModel(BaseModel):
             for j,jt in enumerate(underlyings):
                 indexObservations[jt][it] = indexObservation.IndexObservationScaledExponential(fwd[jt],j)
 
-        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, productData, indexObservations,
+        return evolutiongeneratorlognormal.EvolutionGeneratorLognormal(simulationData, productData, indexObservations,
                                                                futureDates, forwardVarianceVector,
                                                                forwardSqrtCovarianceVector)
 

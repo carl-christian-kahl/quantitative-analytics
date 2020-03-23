@@ -4,7 +4,7 @@ from quantitative_analytics.indices import indices, indexfixingrepository
 from quantitative_analytics.marketdata import marketdata, marketdatarepository
 from quantitative_analytics.products import products
 from quantitative_analytics.models import models
-from quantitative_analytics.calculators import calculators
+from quantitative_analytics.calculators import europeanoptioncalculator, montecarlocalculator
 
 torch.set_printoptions(precision=16)
 
@@ -90,7 +90,7 @@ model = models.LognormalModel(modelData, modelDate)
 def test_european_option_analytic():
 
     data = []
-    eoc = calculators.EuropeanOptionCalculator(data, model, europeanOption)
+    eoc = europeanoptioncalculator.EuropeanOptionCalculator(data, model, europeanOption)
     npv = eoc.npv()
 
     expected_result = torch.tensor(7.9655609130859375)
@@ -104,7 +104,7 @@ def test_asian_option_monte_carlo():
     
     # Run the Monte-Carlo
     simulationData['LegValues'] = True
-    mc = calculators.MonteCarloSimulator(simulationData, model, asianOption)
+    mc = montecarlocalculator.MonteCarloSimulator(simulationData, model, asianOption)
     npvmc = mc.npv()
 
     # Compute first order derivatives
@@ -137,7 +137,7 @@ def test_asian_option_monte_carlo():
 def test_european_option_monte_carlo():
     # Run the Monte-Carlo
     simulationData['LegValues'] = False
-    mc = calculators.MonteCarloSimulator(simulationData, model, europeanOption)
+    mc = montecarlocalculator.MonteCarloSimulator(simulationData, model, europeanOption)
     npvmc = mc.npv()[0]
 
     # Compute first order derivatives
@@ -164,7 +164,7 @@ def test_european_option_monte_carlo():
 def test_asian_basket_option_monte_carlo():
     # Run the Monte-Carlo
     simulationData['LegValues'] = True
-    mc = calculators.MonteCarloSimulator(simulationData, model, asianBasketOption)
+    mc = montecarlocalculator.MonteCarloSimulator(simulationData, model, asianBasketOption)
     npvmc = mc.npv()
 
     # Compute first order derivatives
