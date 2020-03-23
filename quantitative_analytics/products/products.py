@@ -17,6 +17,9 @@ class BaseProduct(object):
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
 
+    def getNumberOfLegs(self):
+        return 0
+
 class EuropeanOptionProduct(BaseProduct):
 
     def __init__(self, data):
@@ -36,14 +39,16 @@ class EuropeanOptionProduct(BaseProduct):
     def getExpiry(self):
         return self.expiry
 
-    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor):
-        strike = self.data['strike']
-        expiry = self.data['expiry']
-        index = self.data['index']
+    def getNumberOfLegs(self):
+        return 2
 
-        indexValues = evolutionGenerator.getValue(expiry,index,stateTensor)
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor, eventDate):
 
-        return [indexValues,functionapproximation.max_if(indexValues-strike,torch.tensor(0.0))]
+        if eventDate == self.expiry:
+            indexValues = evolutionGenerator.getValue(self.expiry, self.index, stateTensor)
+            return [indexValues,functionapproximation.max_if(indexValues-self.strike,torch.tensor(0.0))]
+        else:
+            return [torch.tensor(0.0),torch.tensor(0.0)]
 
     def productData(self):
         return productData.ProductDataBase(self.dates_underylings)
@@ -58,18 +63,30 @@ class AsianOptionProduct(BaseProduct):
 
         self.index = self.data['index']
         self.dates_underylings = {}
+        self.firstDate = self.observationDates[0]
+        self.expiry = self.observationDates[-1]
         for it in self.observationDates:
             self.dates_underylings[it] = [self.index]
 
-    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor):
-        strike = self.data['strike']
-        index = self.data['index']
+        self.strike = self.data['strike']
+        self.index = self.data['index']
 
-        avg = torch.tensor(0.)
-        for it in self.observationDates :
-            avg = avg + evolutionGenerator.getValue(it,index,stateTensor)
+    def getNumberOfLegs(self):
+        return 2
 
-        return [avg / torch.tensor(self.numberOfObservationDates), functionapproximation.max_if(avg / torch.tensor(self.numberOfObservationDates) - strike, torch.tensor(0.))]
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor, eventDate):
+
+        workspace = evolutionGenerator.getProductData().getWorkspace()
+        if eventDate == self.firstDate:
+            workspace['avg'] = torch.tensor(0.)
+
+        workspace['avg'] = workspace['avg'] + evolutionGenerator.getValue(eventDate,self.index,stateTensor)
+
+        if eventDate == self.expiry:
+            avg = evolutionGenerator.productData.workspace['avg'] / torch.tensor(self.numberOfObservationDates)
+            return [avg, functionapproximation.max_if(avg - self.strike, torch.tensor(0.))]
+        else:
+            return [torch.tensor(0.0),torch.tensor(0.0)]
 
 class AsianBasketOptionProduct(BaseProduct):
 
@@ -79,6 +96,10 @@ class AsianBasketOptionProduct(BaseProduct):
         self.observationDates = self.data['observationDates']
         self.numberOfObservationDates = len(self.observationDates)
 
+        self.firstDate = self.observationDates[0]
+        self.expiry = self.observationDates[-1]
+        self.strike = self.data['strike']
+
         self.indices = self.data['indices']
         self.numberOfIndices = len(self.indices)
         self.dates_underylings = {}
@@ -87,17 +108,24 @@ class AsianBasketOptionProduct(BaseProduct):
             for jt in self.indices:
                 self.dates_underylings[it].append(jt)
 
-    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor):
-        strike = self.data['strike']
+    def getNumberOfLegs(self):
+        return 2
 
-        avg = torch.tensor(0.)
-        for it in self.observationDates :
-            for jt in self.indices:
-                avg = avg + evolutionGenerator.getValue(it,jt,stateTensor)
+    def getPayoff(self, evolutionGenerator : evolutionGenerators.EvolutionGeneratorBase, stateTensor, eventDate):
 
-        asianBasket = avg / torch.tensor(self.numberOfObservationDates) / torch.tensor(self.numberOfIndices)
+        workspace = evolutionGenerator.getProductData().getWorkspace()
+        if eventDate == self.firstDate:
+            workspace['avg'] = torch.tensor(0.)
 
-        return [functionapproximation.max_if(asianBasket - strike, torch.tensor(0.))]
+        for jt in self.indices:
+            workspace['avg'] = workspace['avg'] + evolutionGenerator.getValue(eventDate, jt, stateTensor)
+
+        if eventDate == self.expiry:
+            avg = evolutionGenerator.productData.workspace['avg'] / torch.tensor(self.numberOfObservationDates) / torch.tensor(self.numberOfIndices)
+            return [avg, functionapproximation.max_if(avg - self.strike, torch.tensor(0.))]
+        else:
+            return [torch.tensor(0.0),torch.tensor(0.0)]
+
 
 if __name__ == '__main__':
     expiry = datetime.date(year=2021, month=12, day=30)

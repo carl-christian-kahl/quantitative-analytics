@@ -52,17 +52,24 @@ class MonteCarloSimulator(BaseCalculator):
         self.data = data
         self.model = model
         self.product = product
+        self.numberOfLegs = product.getNumberOfLegs()
         self.baseDate = model.getBaseDate()
         # Ask the model to create an Evolution Generator
         productData = self.product.productData()
         self.fixingValues = []
         self.evolutionGenerator = self.model.createEvolutionGenerator(data, productData)
+        self.dates_underlyings = self.product.getDatesUnderlying()
 
     def npv(self):
         # Split this off as this is the time consuming part
         # self.evolutionGenerator.to(device=device)
         stateTensor = self.evolutionGenerator.createStateTensor()
-        values = self.product.getPayoff(self.evolutionGenerator, stateTensor)
+
+        values = [torch.tensor(0.0),torch.tensor(0.0)]
+        for it in self.dates_underlyings.keys():
+            valueThisEventDate = self.product.getPayoff(self.evolutionGenerator, stateTensor, it)
+            for i,it in enumerate(values):
+                values[i] = values[i] + valueThisEventDate[i]
 
         results = []
         for it in values:

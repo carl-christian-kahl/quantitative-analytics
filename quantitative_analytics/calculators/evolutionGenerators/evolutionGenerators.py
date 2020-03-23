@@ -5,24 +5,30 @@ import numpy as np
 torch.manual_seed(2)
 
 class EvolutionGeneratorBase(torch.nn.Module):
-    def __init__(self, data):
+    def __init__(self, data, productData):
         super(EvolutionGeneratorBase, self).__init__()
         self.data = data
+        self.productData = productData
+
+    def getProductData(self):
+        return self.productData
 
 class EvolutionGeneratorMonteCarloBase(EvolutionGeneratorBase):
-    def __init__(self, data, indexObservations):
-        super(EvolutionGeneratorMonteCarloBase, self).__init__(indexObservations)
+    def __init__(self, data, productData, indexObservations):
+        super(EvolutionGeneratorMonteCarloBase, self).__init__(productData, indexObservations)
         self.data = data
+        self.productData = productData
         self.numberOfSimulations = data['NumberOfSimulations']
 
     def getValue(self, date, index, stateTensor):
         return 0
 
 class EvolutionGeneratorLognormal(EvolutionGeneratorMonteCarloBase):
-    def __init__(self, data, indexObservations, futureDates,
+    def __init__(self, data, productData, indexObservations, futureDates,
                  forwardVarianceVector, forwardCovarianceVector):
-        super(EvolutionGeneratorLognormal, self).__init__(data, indexObservations)
+        super(EvolutionGeneratorLognormal, self).__init__(data, productData, indexObservations)
         self.data = data
+        self.productData = productData
         self.numberOfSimulations = data['NumberOfSimulations']
         self.forwardVarianceVector = forwardVarianceVector
         self.forwardCovarianceVector = forwardCovarianceVector

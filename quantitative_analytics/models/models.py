@@ -149,7 +149,7 @@ class LognormalModel(BaseModel):
             for j,jt in enumerate(underlyings):
                 indexObservations[jt][it] = indexObservation.IndexObservationScaledExponential(fwd[jt],j)
 
-        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, indexObservations,
+        return evolutionGenerators.EvolutionGeneratorLognormal(simulationData, productData, indexObservations,
                                                                futureDates, forwardVarianceVector,
                                                                forwardSqrtCovarianceVector)
 

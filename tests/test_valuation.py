@@ -175,7 +175,7 @@ def test_asian_basket_option_monte_carlo():
         dx = torch.autograd.grad(it, x, create_graph=True, retain_graph=True, allow_unused=True)[0]
         dxs.append(dx)
 
-    expected_dx = [torch.tensor(0.1680531501770020), torch.tensor(0.1809422969818115)]
+    expected_dx = [torch.tensor(0.3335859775543213), torch.tensor(0.1680531501770020)]
 
     for i, it in enumerate(dxs):
         assert abs(it - expected_dx[i]) < EPSILON

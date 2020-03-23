@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="76a904da-ecd5-425f-8944-7c9733f5151d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/valuation_example.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/examples/valuation_example.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quantitative_analytics.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics.egg-info/SOURCES.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/quantitative_analytics.egg-info/top_level.txt" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics.egg-info/top_level.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quantitative_analytics/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quantitative_analytics/products/productData.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/products/productData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/quantitative_analytics/products/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/quantitative_analytics/products/products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/test_valuation.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_valuation.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,11 +18,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/setup.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tests/test_valuation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+            <state relative-caret-position="402">
+              <caret line="177" column="84" selection-start-line="177" selection-start-column="84" selection-end-line="177" selection-end-column="84" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -45,8 +50,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quantitative_analytics/models/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-205">
-              <caret line="125" selection-start-line="125" selection-end-line="125" />
+            <state relative-caret-position="17">
+              <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
               <folding>
                 <element signature="e#0#86#0" expanded="true" />
               </folding>
@@ -57,8 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="63" column="63" selection-start-line="63" selection-start-column="46" selection-end-line="63" selection-end-column="63" />
+            <state relative-caret-position="418">
+              <caret line="46" column="40" lean-forward="true" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
               <folding>
                 <element signature="e#0#52#0" expanded="true" />
               </folding>
@@ -66,50 +71,53 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/nn/modules/module.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="50" selection-start-line="50" selection-end-line="50" />
+            <state relative-caret-position="198">
+              <caret line="575" selection-start-line="575" selection-end-line="575" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/products.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="187">
+              <caret line="120" column="105" lean-forward="true" selection-start-line="120" selection-start-column="105" selection-end-line="120" selection-end-column="105" />
               <folding>
-                <element signature="e#0#12#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/scipy/interpolate/polyint.py">
+        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/autograd/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="867">
-              <caret line="59" selection-start-line="59" selection-end-line="59" />
+            <state relative-caret-position="198">
+              <caret line="156" selection-start-line="156" selection-end-line="156" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/quantitative_analytics/interpolators/interpolate.py">
+        <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/productData.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="27" column="18" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="18" />
+            <state relative-caret-position="153">
+              <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/tensor.py">
+        <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8041">
-              <caret line="485" selection-start-line="485" selection-end-line="485" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/scipy/interpolate/interpolate.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7310">
-              <caret line="430" selection-start-line="430" selection-end-line="430" />
+            <state relative-caret-position="317">
+              <caret line="51" column="42" lean-forward="true" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -142,16 +150,18 @@
         <option value="$PROJECT_DIR$/src/quantitative-analytics/quantitative_analytics/interpolators/interpolate.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/interpolators/pade.py" />
         <option value="$PROJECT_DIR$/hello.ipynb" />
-        <option value="$PROJECT_DIR$/quantitative_analytics/models/models.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/curves/curves.py" />
-        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/interpolators/interpolate.py" />
-        <option value="$PROJECT_DIR$/tests/test_valuation.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/__init__.py" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/tests/test_analytics.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/products/productData.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/models/models.py" />
         <option value="$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py" />
+        <option value="$PROJECT_DIR$/quantitative_analytics/products/products.py" />
+        <option value="$PROJECT_DIR$/tests/test_valuation.py" />
       </list>
     </option>
   </component>
@@ -189,18 +199,6 @@
             <path>
               <item name="quantitative-analytics" type="b2602c69:ProjectViewProjectNode" />
               <item name="quantitative-analytics" type="462c0819:PsiDirectoryNode" />
-              <item name="quantitative_analytics" type="462c0819:PsiDirectoryNode" />
-              <item name="marketdata" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quantitative-analytics" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quantitative-analytics" type="462c0819:PsiDirectoryNode" />
-              <item name="quantitative_analytics" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="quantitative-analytics" type="b2602c69:ProjectViewProjectNode" />
-              <item name="quantitative-analytics" type="462c0819:PsiDirectoryNode" />
               <item name="tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -232,7 +230,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.test_analytics">
+  <component name="RunManager" selected="Python.test_valuation">
     <configuration name="calculators" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="quantitative-analytics" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -340,9 +338,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test_analytics" />
         <item itemvalue="Python.test_valuation" />
         <item itemvalue="Python.calculators" />
+        <item itemvalue="Python.test_analytics" />
         <item itemvalue="Python.interpolate" />
         <item itemvalue="Python.simple_torch" />
       </list>
@@ -422,26 +420,33 @@
       <option name="project" value="LOCAL" />
       <updated>1584959631686</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Show how to extend the framework in the JupyterLab example&#10;&#10;Checked in by: CK">
+      <created>1584963462802</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1584963462802</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24973656" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49947312" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4910432" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49315068" weight="0.3997833" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4873551" weight="0.32936078" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.48946258" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49947312" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49315068" weight="0.32827735" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5089568" side_tool="true" visible="true" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" sideWeight="0.5679663" visible="true" weight="0.32827735" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.43203372" side_tool="true" visible="true" weight="0.32827735" />
       <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49947312" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -456,7 +461,8 @@
     <MESSAGE value="Add Jupyter notebook example&#10;&#10;Checked in by: CK" />
     <MESSAGE value="Update requirements file after installing JupyterLab&#10;&#10;Checked in by: CK" />
     <MESSAGE value="Changed setup file&#10;&#10;Checked in by: CK" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed setup file&#10;&#10;Checked in by: CK" />
+    <MESSAGE value="Show how to extend the framework in the JupyterLab example&#10;&#10;Checked in by: CK" />
+    <option name="LAST_COMMIT_MESSAGE" value="Show how to extend the framework in the JupyterLab example&#10;&#10;Checked in by: CK" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -476,8 +482,28 @@
           <line>44</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py</url>
+          <line>73</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/quantitative_analytics/products/products.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py</url>
+          <line>71</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="values[2019-06-30]" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/sandbox.py">
@@ -488,24 +514,10 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/quantitative-analytics/quantitative_analytics/interpolators/interpolate.py" />
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/autograd/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1530">
-          <caret line="98" selection-start-line="98" selection-end-line="98" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/scipy/_lib/_util.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3978">
           <caret line="245" selection-start-line="245" selection-end-line="245" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/nn/modules/module.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9673">
-          <caret line="575" selection-start-line="575" selection-end-line="575" />
         </state>
       </provider>
     </entry>
@@ -605,16 +617,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/tests/test_valuation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1955">
-          <caret line="115" column="22" selection-start-line="115" selection-start-column="22" selection-end-line="115" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/quantitative_analytics/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -684,20 +686,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/productData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/nn/modules/module.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="575" selection-start-line="575" selection-end-line="575" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/quantitative_analytics/models/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-205">
-          <caret line="125" selection-start-line="125" selection-end-line="125" />
+        <state relative-caret-position="17">
+          <caret line="99" lean-forward="true" selection-start-line="99" selection-end-line="99" />
           <folding>
             <element signature="e#0#86#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/torch/autograd/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="156" selection-start-line="156" selection-end-line="156" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/calculators.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="63" column="63" selection-start-line="63" selection-start-column="46" selection-end-line="63" selection-end-column="63" />
+        <state relative-caret-position="418">
+          <caret line="46" column="40" lean-forward="true" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
           <folding>
             <element signature="e#0#52#0" expanded="true" />
           </folding>
@@ -706,10 +729,30 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/quantitative_analytics/calculators/evolutionGenerators/evolutionGenerators.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="50" selection-start-line="50" selection-end-line="50" />
+        <state relative-caret-position="317">
+          <caret line="51" column="42" lean-forward="true" selection-start-line="51" selection-start-column="42" selection-end-line="51" selection-end-column="42" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/quantitative_analytics/products/products.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="120" column="105" lean-forward="true" selection-start-line="120" selection-start-column="105" selection-end-line="120" selection-end-column="105" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_valuation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="177" column="84" selection-start-line="177" selection-start-column="84" selection-end-line="177" selection-end-column="84" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
