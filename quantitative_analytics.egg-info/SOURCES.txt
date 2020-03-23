@@ -2,4 +2,5 @@ setup.py
 quantitative_analytics.egg-info/PKG-INFO
 quantitative_analytics.egg-info/SOURCES.txt
 quantitative_analytics.egg-info/dependency_links.txt
+quantitative_analytics.egg-info/not-zip-safe
 quantitative_analytics.egg-info/top_level.txt
